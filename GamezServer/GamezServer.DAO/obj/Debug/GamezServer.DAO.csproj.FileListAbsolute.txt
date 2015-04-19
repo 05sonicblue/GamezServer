@@ -1,0 +1,15 @@
+C:\Personal\Github\GamezServer\GamezServer\GamezServer.DAO\bin\Debug\GamezServer.DAO.dll.config
+C:\Personal\Github\GamezServer\GamezServer\GamezServer.DAO\bin\Debug\GamezServer.DAO.dll
+C:\Personal\Github\GamezServer\GamezServer\GamezServer.DAO\bin\Debug\GamezServer.DAO.pdb
+C:\Personal\Github\GamezServer\GamezServer\GamezServer.DAO\bin\Debug\EntityFramework.dll
+C:\Personal\Github\GamezServer\GamezServer\GamezServer.DAO\bin\Debug\EntityFramework.SqlServer.dll
+C:\Personal\Github\GamezServer\GamezServer\GamezServer.DAO\bin\Debug\System.Data.SQLite.dll
+C:\Personal\Github\GamezServer\GamezServer\GamezServer.DAO\bin\Debug\System.Data.SQLite.EF6.dll
+C:\Personal\Github\GamezServer\GamezServer\GamezServer.DAO\bin\Debug\System.Data.SQLite.Linq.dll
+C:\Personal\Github\GamezServer\GamezServer\GamezServer.DAO\bin\Debug\EntityFramework.xml
+C:\Personal\Github\GamezServer\GamezServer\GamezServer.DAO\bin\Debug\EntityFramework.SqlServer.xml
+C:\Personal\Github\GamezServer\GamezServer\GamezServer.DAO\bin\Debug\System.Data.SQLite.xml
+C:\Personal\Github\GamezServer\GamezServer\GamezServer.DAO\obj\Debug\GamezServer.DAO.csprojResolveAssemblyReference.cache
+C:\Personal\Github\GamezServer\GamezServer\GamezServer.DAO\obj\Debug\GamezServer.DAO.dll
+C:\Personal\Github\GamezServer\GamezServer\GamezServer.DAO\obj\Debug\GamezServer.DAO.pdb
+C:\Personal\Github\GamezServer\GamezServer\GamezServer.DAO\bin\Debug\GamezServer.db
