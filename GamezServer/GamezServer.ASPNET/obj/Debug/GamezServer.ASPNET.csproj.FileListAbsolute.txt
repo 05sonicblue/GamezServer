@@ -17,3 +17,14 @@ C:\Personal\Github\GamezServer\GamezServer\GamezServer.ASPNET\bin\GamezServer.Do
 C:\Personal\Github\GamezServer\GamezServer\GamezServer.ASPNET\bin\GamezServer.Utilities.dll
 C:\Personal\Github\GamezServer\GamezServer\GamezServer.ASPNET\bin\GamezServer.DomainObject.pdb
 C:\Personal\Github\GamezServer\GamezServer\GamezServer.ASPNET\bin\GamezServer.Utilities.pdb
+C:\Personal\GitHub\GamezServer\GamezServer\GamezServer.ASPNET\bin\GamezServer.DAO.dll
+C:\Personal\GitHub\GamezServer\GamezServer\GamezServer.ASPNET\bin\EntityFramework.dll
+C:\Personal\GitHub\GamezServer\GamezServer\GamezServer.ASPNET\bin\GamezServer.DAO.pdb
+C:\Personal\GitHub\GamezServer\GamezServer\GamezServer.ASPNET\bin\EntityFramework.xml
+C:\Personal\GitHub\GamezServer\GamezServer\GamezServer.ASPNET\bin\EntityFramework.SqlServer.dll
+C:\Personal\GitHub\GamezServer\GamezServer\GamezServer.ASPNET\bin\EntityFramework.SqlServer.xml
+C:\Personal\GitHub\GamezServer\GamezServer\GamezServer.ASPNET\bin\System.Data.SQLite.dll
+C:\Personal\GitHub\GamezServer\GamezServer\GamezServer.ASPNET\bin\System.Data.SQLite.EF6.dll
+C:\Personal\GitHub\GamezServer\GamezServer\GamezServer.ASPNET\bin\System.Data.SQLite.Linq.dll
+C:\Personal\GitHub\GamezServer\GamezServer\GamezServer.ASPNET\bin\System.Data.SQLite.xml
+C:\Personal\GitHub\GamezServer\GamezServer\GamezServer.ASPNET\bin\GamezServer.db

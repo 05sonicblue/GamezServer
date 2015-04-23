@@ -1,5 +1,4 @@
 C:\Personal\Github\GamezServer\GamezServer\GamezServer.Utilities\bin\Debug\GamezServer.Utilities.dll
 C:\Personal\Github\GamezServer\GamezServer\GamezServer.Utilities\bin\Debug\GamezServer.Utilities.pdb
-C:\Personal\Github\GamezServer\GamezServer\GamezServer.Utilities\obj\Debug\GamezServer.Utilities.csprojResolveAssemblyReference.cache
 C:\Personal\Github\GamezServer\GamezServer\GamezServer.Utilities\obj\Debug\GamezServer.Utilities.dll
 C:\Personal\Github\GamezServer\GamezServer\GamezServer.Utilities\obj\Debug\GamezServer.Utilities.pdb

@@ -14,28 +14,35 @@ namespace GamezServer.ASPNET
 {
     public class Global : System.Web.HttpApplication
     {
+        Thread masterGamesUpdaterThread;
         IScheduler scheduler;
+
+        void MasterGameUpdater()
+        {
+            UpdateGamesListJob.Platforms();
+        }
 
         protected void Application_Start(object sender, EventArgs e)
         {
-            NameValueCollection quartzSettings = new NameValueCollection();
-            quartzSettings["quartz.scheduler.instanceName"] = ConfigurationManager.AppSettings["quartz.scheduler.instanceName"].ToString();
-            quartzSettings["quartz.threadPool.type"] = ConfigurationManager.AppSettings["quartz.threadPool.type"].ToString();
-            quartzSettings["quartz.threadPool.threadCount"] = ConfigurationManager.AppSettings["quartz.threadPool.threadCount"].ToString();
-            quartzSettings["quartz.threadPool.threadPriority"] = ConfigurationManager.AppSettings["quartz.threadPool.threadPriority"].ToString();
-            scheduler = new StdSchedulerFactory(quartzSettings).GetScheduler();
-            try
-            {
-                scheduler.Start();
-                BuildJobs();
-            }
-            catch
-            {
-                if (scheduler != null && scheduler.IsStarted)
-                {
-                    scheduler.Shutdown();
-                }
-            }
+            Timer masterGamesUpdaterTimer = new Timer((action) => { MasterGameUpdater(); }, null, 0, 30000);
+            //NameValueCollection quartzSettings = new NameValueCollection();
+            //quartzSettings["quartz.scheduler.instanceName"] = ConfigurationManager.AppSettings["quartz.scheduler.instanceName"].ToString();
+            //quartzSettings["quartz.threadPool.type"] = ConfigurationManager.AppSettings["quartz.threadPool.type"].ToString();
+            //quartzSettings["quartz.threadPool.threadCount"] = ConfigurationManager.AppSettings["quartz.threadPool.threadCount"].ToString();
+            //quartzSettings["quartz.threadPool.threadPriority"] = ConfigurationManager.AppSettings["quartz.threadPool.threadPriority"].ToString();
+            //scheduler = new StdSchedulerFactory(quartzSettings).GetScheduler();
+            //try
+            //{
+            //    scheduler.Start();
+            //    BuildJobs();
+            //}
+            //catch
+            //{
+            //    if (scheduler != null && scheduler.IsStarted)
+            //    {
+            //        scheduler.Shutdown();
+            //    }
+            //}
         }
 
         protected void Session_Start(object sender, EventArgs e)
@@ -65,10 +72,10 @@ namespace GamezServer.ASPNET
 
         protected void Application_End(object sender, EventArgs e)
         {
-            if (scheduler != null && scheduler.IsStarted)
-            {
-                scheduler.Shutdown();
-            }
+            //if (scheduler != null && scheduler.IsStarted)
+            //{
+            //    scheduler.Shutdown();
+            //}
         }
 
         private void BuildJobs()

@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="GamezServerModelStoreContainer" CdmEntityContainer="GamezServerEntities">
+    <EntitySetMapping Name="Platforms">
+      <EntityTypeMapping TypeName="GamezServerModel.Platform">
+        <MappingFragment StoreEntitySet="Platforms">
+          <ScalarProperty Name="PlatformUniqueName" ColumnName="PlatformUniqueName" />
+          <ScalarProperty Name="PlatformName" ColumnName="PlatformName" />
+          <ScalarProperty Name="PlatformID" ColumnName="PlatformID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

@@ -1,0 +1,447 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>75b524c3-7f53-40c1-8a04-dd52d92f90bb</ProjectGuid>
+    <ProjectHome>.</ProjectHome>
+    <StartupFile>GamezServer.py</StartupFile>
+    <SearchPath>
+    </SearchPath>
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <Name>GamezServer.Python</Name>
+    <RootNamespace>GamezServer.Python</RootNamespace>
+    <IsWindowsApplication>False</IsWindowsApplication>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="cherrypy\lib\auth.py" />
+    <Compile Include="cherrypy\lib\auth_basic.py" />
+    <Compile Include="cherrypy\lib\auth_digest.py" />
+    <Compile Include="cherrypy\lib\caching.py" />
+    <Compile Include="cherrypy\lib\covercp.py" />
+    <Compile Include="cherrypy\lib\cpstats.py" />
+    <Compile Include="cherrypy\lib\cptools.py" />
+    <Compile Include="cherrypy\lib\encoding.py" />
+    <Compile Include="cherrypy\lib\gctools.py" />
+    <Compile Include="cherrypy\lib\http.py" />
+    <Compile Include="cherrypy\lib\httpauth.py" />
+    <Compile Include="cherrypy\lib\httputil.py" />
+    <Compile Include="cherrypy\lib\jsontools.py" />
+    <Compile Include="cherrypy\lib\lockfile.py" />
+    <Compile Include="cherrypy\lib\locking.py" />
+    <Compile Include="cherrypy\lib\profiler.py" />
+    <Compile Include="cherrypy\lib\reprconf.py" />
+    <Compile Include="cherrypy\lib\sessions.py" />
+    <Compile Include="cherrypy\lib\static.py" />
+    <Compile Include="cherrypy\lib\xmlrpcutil.py" />
+    <Compile Include="cherrypy\lib\__init__.py" />
+    <Compile Include="cherrypy\process\plugins.py" />
+    <Compile Include="cherrypy\process\servers.py" />
+    <Compile Include="cherrypy\process\win32.py" />
+    <Compile Include="cherrypy\process\wspbus.py" />
+    <Compile Include="cherrypy\process\__init__.py" />
+    <Compile Include="cherrypy\scaffold\__init__.py" />
+    <Compile Include="cherrypy\test\benchmark.py" />
+    <Compile Include="cherrypy\test\checkerdemo.py" />
+    <Compile Include="cherrypy\test\helper.py" />
+    <Compile Include="cherrypy\test\logtest.py" />
+    <Compile Include="cherrypy\test\modfastcgi.py" />
+    <Compile Include="cherrypy\test\modfcgid.py" />
+    <Compile Include="cherrypy\test\modpy.py" />
+    <Compile Include="cherrypy\test\modwsgi.py" />
+    <Compile Include="cherrypy\test\sessiondemo.py" />
+    <Compile Include="cherrypy\test\test_auth_basic.py" />
+    <Compile Include="cherrypy\test\test_auth_digest.py" />
+    <Compile Include="cherrypy\test\test_bus.py" />
+    <Compile Include="cherrypy\test\test_caching.py" />
+    <Compile Include="cherrypy\test\test_compat.py" />
+    <Compile Include="cherrypy\test\test_config.py" />
+    <Compile Include="cherrypy\test\test_config_server.py" />
+    <Compile Include="cherrypy\test\test_conn.py" />
+    <Compile Include="cherrypy\test\test_core.py" />
+    <Compile Include="cherrypy\test\test_dynamicobjectmapping.py" />
+    <Compile Include="cherrypy\test\test_encoding.py" />
+    <Compile Include="cherrypy\test\test_etags.py" />
+    <Compile Include="cherrypy\test\test_http.py" />
+    <Compile Include="cherrypy\test\test_httpauth.py" />
+    <Compile Include="cherrypy\test\test_httplib.py" />
+    <Compile Include="cherrypy\test\test_iterator.py" />
+    <Compile Include="cherrypy\test\test_json.py" />
+    <Compile Include="cherrypy\test\test_logging.py" />
+    <Compile Include="cherrypy\test\test_mime.py" />
+    <Compile Include="cherrypy\test\test_misc_tools.py" />
+    <Compile Include="cherrypy\test\test_objectmapping.py" />
+    <Compile Include="cherrypy\test\test_proxy.py" />
+    <Compile Include="cherrypy\test\test_refleaks.py" />
+    <Compile Include="cherrypy\test\test_request_obj.py" />
+    <Compile Include="cherrypy\test\test_routes.py" />
+    <Compile Include="cherrypy\test\test_session.py" />
+    <Compile Include="cherrypy\test\test_sessionauthenticate.py" />
+    <Compile Include="cherrypy\test\test_states.py" />
+    <Compile Include="cherrypy\test\test_static.py" />
+    <Compile Include="cherrypy\test\test_tools.py" />
+    <Compile Include="cherrypy\test\test_tutorials.py" />
+    <Compile Include="cherrypy\test\test_virtualhost.py" />
+    <Compile Include="cherrypy\test\test_wsgiapps.py" />
+    <Compile Include="cherrypy\test\test_wsgi_ns.py" />
+    <Compile Include="cherrypy\test\test_wsgi_vhost.py" />
+    <Compile Include="cherrypy\test\test_xmlrpc.py" />
+    <Compile Include="cherrypy\test\webtest.py" />
+    <Compile Include="cherrypy\test\_test_decorators.py" />
+    <Compile Include="cherrypy\test\_test_states_demo.py" />
+    <Compile Include="cherrypy\test\__init__.py" />
+    <Compile Include="cherrypy\tutorial\tut01_helloworld.py" />
+    <Compile Include="cherrypy\tutorial\tut02_expose_methods.py" />
+    <Compile Include="cherrypy\tutorial\tut03_get_and_post.py" />
+    <Compile Include="cherrypy\tutorial\tut04_complex_site.py" />
+    <Compile Include="cherrypy\tutorial\tut05_derived_objects.py" />
+    <Compile Include="cherrypy\tutorial\tut06_default_method.py" />
+    <Compile Include="cherrypy\tutorial\tut07_sessions.py" />
+    <Compile Include="cherrypy\tutorial\tut08_generators_and_yield.py" />
+    <Compile Include="cherrypy\tutorial\tut09_files.py" />
+    <Compile Include="cherrypy\tutorial\tut10_http_errors.py" />
+    <Compile Include="cherrypy\tutorial\__init__.py" />
+    <Compile Include="cherrypy\wsgiserver\ssl_builtin.py" />
+    <Compile Include="cherrypy\wsgiserver\ssl_pyopenssl.py" />
+    <Compile Include="cherrypy\wsgiserver\wsgiserver2.py" />
+    <Compile Include="cherrypy\wsgiserver\wsgiserver3.py" />
+    <Compile Include="cherrypy\wsgiserver\__init__.py" />
+    <Compile Include="cherrypy\_cpchecker.py" />
+    <Compile Include="cherrypy\_cpcompat.py" />
+    <Compile Include="cherrypy\_cpcompat_subprocess.py" />
+    <Compile Include="cherrypy\_cpconfig.py" />
+    <Compile Include="cherrypy\_cpdispatch.py" />
+    <Compile Include="cherrypy\_cperror.py" />
+    <Compile Include="cherrypy\_cplogging.py" />
+    <Compile Include="cherrypy\_cpmodpy.py" />
+    <Compile Include="cherrypy\_cpnative_server.py" />
+    <Compile Include="cherrypy\_cpreqbody.py" />
+    <Compile Include="cherrypy\_cprequest.py" />
+    <Compile Include="cherrypy\_cpserver.py" />
+    <Compile Include="cherrypy\_cpthreadinglocal.py" />
+    <Compile Include="cherrypy\_cptools.py" />
+    <Compile Include="cherrypy\_cptree.py" />
+    <Compile Include="cherrypy\_cpwsgi.py" />
+    <Compile Include="cherrypy\_cpwsgi_server.py" />
+    <Compile Include="cherrypy\__init__.py" />
+    <Compile Include="dexml\fields.py" />
+    <Compile Include="dexml\test.py" />
+    <Compile Include="dexml\__init__.py" />
+    <Compile Include="GamezServer.py" />
+    <Compile Include="GamezServer\DAO.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="GamezServer\Service.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="GamezServer\Task.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="GamezServer\WebServe.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="GamezServer\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="lxml\builder.py" />
+    <Compile Include="lxml\cssselect.py" />
+    <Compile Include="lxml\doctestcompare.py" />
+    <Compile Include="lxml\ElementInclude.py" />
+    <Compile Include="lxml\html\builder.py" />
+    <Compile Include="lxml\html\clean.py" />
+    <Compile Include="lxml\html\defs.py" />
+    <Compile Include="lxml\html\diff.py" />
+    <Compile Include="lxml\html\ElementSoup.py" />
+    <Compile Include="lxml\html\formfill.py" />
+    <Compile Include="lxml\html\html5parser.py" />
+    <Compile Include="lxml\html\soupparser.py" />
+    <Compile Include="lxml\html\tests\test_autolink.py" />
+    <Compile Include="lxml\html\tests\test_basic.py" />
+    <Compile Include="lxml\html\tests\test_clean.py" />
+    <Compile Include="lxml\html\tests\test_diff.py" />
+    <Compile Include="lxml\html\tests\test_elementsoup.py" />
+    <Compile Include="lxml\html\tests\test_feedparser_data.py" />
+    <Compile Include="lxml\html\tests\test_formfill.py" />
+    <Compile Include="lxml\html\tests\test_forms.py" />
+    <Compile Include="lxml\html\tests\test_frames.py" />
+    <Compile Include="lxml\html\tests\test_html5parser.py" />
+    <Compile Include="lxml\html\tests\test_rewritelinks.py" />
+    <Compile Include="lxml\html\tests\test_xhtml.py" />
+    <Compile Include="lxml\html\tests\transform_feedparser_data.py" />
+    <Compile Include="lxml\html\tests\__init__.py" />
+    <Compile Include="lxml\html\usedoctest.py" />
+    <Compile Include="lxml\html\_diffcommand.py" />
+    <Compile Include="lxml\html\_html5builder.py" />
+    <Compile Include="lxml\html\_setmixin.py" />
+    <Compile Include="lxml\html\__init__.py" />
+    <Compile Include="lxml\includes\__init__.py" />
+    <Compile Include="lxml\isoschematron\__init__.py" />
+    <Compile Include="lxml\pyclasslookup.py" />
+    <Compile Include="lxml\sax.py" />
+    <Compile Include="lxml\tests\common_imports.py" />
+    <Compile Include="lxml\tests\dummy_http_server.py" />
+    <Compile Include="lxml\tests\test_builder.py" />
+    <Compile Include="lxml\tests\test_classlookup.py" />
+    <Compile Include="lxml\tests\test_css.py" />
+    <Compile Include="lxml\tests\test_doctestcompare.py" />
+    <Compile Include="lxml\tests\test_dtd.py" />
+    <Compile Include="lxml\tests\test_elementpath.py" />
+    <Compile Include="lxml\tests\test_elementtree.py" />
+    <Compile Include="lxml\tests\test_errors.py" />
+    <Compile Include="lxml\tests\test_etree.py" />
+    <Compile Include="lxml\tests\test_htmlparser.py" />
+    <Compile Include="lxml\tests\test_http_io.py" />
+    <Compile Include="lxml\tests\test_incremental_xmlfile.py" />
+    <Compile Include="lxml\tests\test_io.py" />
+    <Compile Include="lxml\tests\test_isoschematron.py" />
+    <Compile Include="lxml\tests\test_nsclasses.py" />
+    <Compile Include="lxml\tests\test_objectify.py" />
+    <Compile Include="lxml\tests\test_pyclasslookup.py" />
+    <Compile Include="lxml\tests\test_relaxng.py" />
+    <Compile Include="lxml\tests\test_sax.py" />
+    <Compile Include="lxml\tests\test_schematron.py" />
+    <Compile Include="lxml\tests\test_threading.py" />
+    <Compile Include="lxml\tests\test_unicode.py" />
+    <Compile Include="lxml\tests\test_xmlschema.py" />
+    <Compile Include="lxml\tests\test_xpathevaluator.py" />
+    <Compile Include="lxml\tests\test_xslt.py" />
+    <Compile Include="lxml\tests\__init__.py" />
+    <Compile Include="lxml\usedoctest.py" />
+    <Compile Include="lxml\_elementpath.py" />
+    <Compile Include="lxml\__init__.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="cherrypy\" />
+    <Folder Include="cherrypy\lib\" />
+    <Folder Include="cherrypy\process\" />
+    <Folder Include="cherrypy\scaffold\" />
+    <Folder Include="cherrypy\scaffold\static\" />
+    <Folder Include="cherrypy\test\" />
+    <Folder Include="cherrypy\test\static\" />
+    <Folder Include="cherrypy\tutorial\" />
+    <Folder Include="cherrypy\wsgiserver\" />
+    <Folder Include="dexml\" />
+    <Folder Include="GamezServer\" />
+    <Folder Include="GamezServer\static-web\" />
+    <Folder Include="GamezServer\static-web\scripts\" />
+    <Folder Include="GamezServer\static-web\styles\" />
+    <Folder Include="GamezServer\static-web\styles\images\" />
+    <Folder Include="lxml\" />
+    <Folder Include="lxml\html\" />
+    <Folder Include="lxml\html\tests\" />
+    <Folder Include="lxml\html\tests\feedparser-data\" />
+    <Folder Include="lxml\html\tests\hackers-org-data\" />
+    <Folder Include="lxml\includes\" />
+    <Folder Include="lxml\isoschematron\" />
+    <Folder Include="lxml\isoschematron\resources\" />
+    <Folder Include="lxml\isoschematron\resources\rng\" />
+    <Folder Include="lxml\isoschematron\resources\xsl\" />
+    <Folder Include="lxml\isoschematron\resources\xsl\iso-schematron-xslt1\" />
+    <Folder Include="lxml\tests\" />
+    <Folder Include="lxml\tests\include\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="cherrypy\cherryd" />
+    <Content Include="cherrypy\favicon.ico" />
+    <Content Include="cherrypy\LICENSE.txt" />
+    <Content Include="cherrypy\scaffold\apache-fcgi.conf" />
+    <Content Include="cherrypy\scaffold\example.conf" />
+    <Content Include="cherrypy\scaffold\site.conf" />
+    <Content Include="cherrypy\scaffold\static\made_with_cherrypy_small.png" />
+    <Content Include="cherrypy\test\static\404.html" />
+    <Content Include="cherrypy\test\static\dirback.jpg" />
+    <Content Include="cherrypy\test\static\index.html" />
+    <Content Include="cherrypy\test\style.css" />
+    <Content Include="cherrypy\test\test.pem" />
+    <Content Include="cherrypy\tutorial\custom_error.html" />
+    <Content Include="cherrypy\tutorial\pdf_file.pdf" />
+    <Content Include="cherrypy\tutorial\README.txt" />
+    <Content Include="cherrypy\tutorial\tutorial.conf" />
+    <Content Include="GamezServer.db" />
+    <Content Include="GamezServer.ini" />
+    <Content Include="GamezServer\static-web\scripts\dataTables.jqueryui.js" />
+    <Content Include="GamezServer\static-web\scripts\jquery-ui.js" />
+    <Content Include="GamezServer\static-web\scripts\jquery.dataTables.js" />
+    <Content Include="GamezServer\static-web\scripts\jquery.js" />
+    <Content Include="GamezServer\static-web\scripts\Menu.js" />
+    <Content Include="GamezServer\static-web\styles\dataTables.jqueryui.css" />
+    <Content Include="GamezServer\static-web\styles\images\favicon.ico" />
+    <Content Include="GamezServer\static-web\styles\images\Sorting icons.psd" />
+    <Content Include="GamezServer\static-web\styles\images\sort_asc.png" />
+    <Content Include="GamezServer\static-web\styles\images\sort_asc_disabled.png" />
+    <Content Include="GamezServer\static-web\styles\images\sort_both.png" />
+    <Content Include="GamezServer\static-web\styles\images\sort_desc.png" />
+    <Content Include="GamezServer\static-web\styles\images\sort_desc_disabled.png" />
+    <Content Include="GamezServer\static-web\styles\images\ui-bg_diagonals-small_25_c5ddfc_40x40.png" />
+    <Content Include="GamezServer\static-web\styles\images\ui-bg_diagonals-thick_20_e69700_40x40.png" />
+    <Content Include="GamezServer\static-web\styles\images\ui-bg_diagonals-thick_22_1484e6_40x40.png" />
+    <Content Include="GamezServer\static-web\styles\images\ui-bg_diagonals-thick_26_2293f7_40x40.png" />
+    <Content Include="GamezServer\static-web\styles\images\ui-bg_flat_0_e69700_40x100.png" />
+    <Content Include="GamezServer\static-web\styles\images\ui-bg_flat_0_e6b900_40x100.png" />
+    <Content Include="GamezServer\static-web\styles\images\ui-bg_highlight-soft_100_f9f9f9_1x100.png" />
+    <Content Include="GamezServer\static-web\styles\images\ui-bg_inset-hard_100_eeeeee_1x100.png" />
+    <Content Include="GamezServer\static-web\styles\images\ui-icons_0a82eb_256x240.png" />
+    <Content Include="GamezServer\static-web\styles\images\ui-icons_0b54d5_256x240.png" />
+    <Content Include="GamezServer\static-web\styles\images\ui-icons_5fa5e3_256x240.png" />
+    <Content Include="GamezServer\static-web\styles\images\ui-icons_fcdd4a_256x240.png" />
+    <Content Include="GamezServer\static-web\styles\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="GamezServer\static-web\styles\jquery-ui.css" />
+    <Content Include="GamezServer\static-web\styles\jquery-ui.structure.css" />
+    <Content Include="GamezServer\static-web\styles\jquery-ui.theme.css" />
+    <Content Include="GamezServer\static-web\styles\jquery.dataTables.css" />
+    <Content Include="GamezServer\static-web\styles\jquery.dataTables_themeroller.css" />
+    <Content Include="GamezServer\static-web\styles\Menu.css" />
+    <Content Include="lxml\apihelpers.pxi" />
+    <Content Include="lxml\classlookup.pxi" />
+    <Content Include="lxml\cleanup.pxi" />
+    <Content Include="lxml\cvarargs.pxd" />
+    <Content Include="lxml\debug.pxi" />
+    <Content Include="lxml\docloader.pxi" />
+    <Content Include="lxml\dtd.pxi" />
+    <Content Include="lxml\extensions.pxi" />
+    <Content Include="lxml\html\tests\feedparser-data\entry_content_applet.data" />
+    <Content Include="lxml\html\tests\feedparser-data\entry_content_blink.data" />
+    <Content Include="lxml\html\tests\feedparser-data\entry_content_crazy.data" />
+    <Content Include="lxml\html\tests\feedparser-data\entry_content_embed.data" />
+    <Content Include="lxml\html\tests\feedparser-data\entry_content_frame.data" />
+    <Content Include="lxml\html\tests\feedparser-data\entry_content_iframe.data" />
+    <Content Include="lxml\html\tests\feedparser-data\entry_content_link.data" />
+    <Content Include="lxml\html\tests\feedparser-data\entry_content_meta.data" />
+    <Content Include="lxml\html\tests\feedparser-data\entry_content_object.data" />
+    <Content Include="lxml\html\tests\feedparser-data\entry_content_onabort.data" />
+    <Content Include="lxml\html\tests\feedparser-data\entry_content_onblur.data" />
+    <Content Include="lxml\html\tests\feedparser-data\entry_content_onchange.data" />
+    <Content Include="lxml\html\tests\feedparser-data\entry_content_onclick.data" />
+    <Content Include="lxml\html\tests\feedparser-data\entry_content_ondblclick.data" />
+    <Content Include="lxml\html\tests\feedparser-data\entry_content_onerror.data" />
+    <Content Include="lxml\html\tests\feedparser-data\entry_content_onfocus.data" />
+    <Content Include="lxml\html\tests\feedparser-data\entry_content_onkeydown.data" />
+    <Content Include="lxml\html\tests\feedparser-data\entry_content_onkeypress.data" />
+    <Content Include="lxml\html\tests\feedparser-data\entry_content_onkeyup.data" />
+    <Content Include="lxml\html\tests\feedparser-data\entry_content_onload.data" />
+    <Content Include="lxml\html\tests\feedparser-data\entry_content_onmousedown.data" />
+    <Content Include="lxml\html\tests\feedparser-data\entry_content_onmouseout.data" />
+    <Content Include="lxml\html\tests\feedparser-data\entry_content_onmouseover.data" />
+    <Content Include="lxml\html\tests\feedparser-data\entry_content_onmouseup.data" />
+    <Content Include="lxml\html\tests\feedparser-data\entry_content_onreset.data" />
+    <Content Include="lxml\html\tests\feedparser-data\entry_content_onresize.data" />
+    <Content Include="lxml\html\tests\feedparser-data\entry_content_onsubmit.data" />
+    <Content Include="lxml\html\tests\feedparser-data\entry_content_onunload.data" />
+    <Content Include="lxml\html\tests\feedparser-data\entry_content_script.data" />
+    <Content Include="lxml\html\tests\feedparser-data\entry_content_script_cdata.data" />
+    <Content Include="lxml\html\tests\feedparser-data\entry_content_script_inline.data" />
+    <Content Include="lxml\html\tests\feedparser-data\entry_content_style.data" />
+    <Content Include="lxml\html\tests\hackers-org-data\background-image-plus.data" />
+    <Content Include="lxml\html\tests\hackers-org-data\background-image-with-unicoded.data" />
+    <Content Include="lxml\html\tests\hackers-org-data\downlevel-hidden.data" />
+    <Content Include="lxml\html\tests\hackers-org-data\html-plus-time.data" />
+    <Content Include="lxml\html\tests\hackers-org-data\javascript-link.data" />
+    <Content Include="lxml\html\tests\hackers-org-data\style-comment.data" />
+    <Content Include="lxml\html\tests\hackers-org-data\style-expression.data" />
+    <Content Include="lxml\html\tests\hackers-org-data\style-import.data" />
+    <Content Include="lxml\html\tests\hackers-org-data\style-js-tag.data" />
+    <Content Include="lxml\html\tests\hackers-org-data\style-url-js.data" />
+    <Content Include="lxml\html\tests\hackers-org-data\xml-data-island.data" />
+    <Content Include="lxml\html\tests\hackers-org-data\xml-embedded-js.data" />
+    <Content Include="lxml\html\tests\test_autolink.txt" />
+    <Content Include="lxml\html\tests\test_basic.txt" />
+    <Content Include="lxml\html\tests\test_clean.txt" />
+    <Content Include="lxml\html\tests\test_clean_embed.txt" />
+    <Content Include="lxml\html\tests\test_diff.txt" />
+    <Content Include="lxml\html\tests\test_formfill.txt" />
+    <Content Include="lxml\html\tests\test_forms.txt" />
+    <Content Include="lxml\html\tests\test_rewritelinks.txt" />
+    <Content Include="lxml\html\tests\test_xhtml.txt" />
+    <Content Include="lxml\includes\c14n.pxd" />
+    <Content Include="lxml\includes\config.pxd" />
+    <Content Include="lxml\includes\dtdvalid.pxd" />
+    <Content Include="lxml\includes\etreepublic.pxd" />
+    <Content Include="lxml\includes\etree_defs.h" />
+    <Content Include="lxml\includes\htmlparser.pxd" />
+    <Content Include="lxml\includes\lxml-version.h" />
+    <Content Include="lxml\includes\relaxng.pxd" />
+    <Content Include="lxml\includes\schematron.pxd" />
+    <Content Include="lxml\includes\tree.pxd" />
+    <Content Include="lxml\includes\uri.pxd" />
+    <Content Include="lxml\includes\xinclude.pxd" />
+    <Content Include="lxml\includes\xmlerror.pxd" />
+    <Content Include="lxml\includes\xmlparser.pxd" />
+    <Content Include="lxml\includes\xmlschema.pxd" />
+    <Content Include="lxml\includes\xpath.pxd" />
+    <Content Include="lxml\includes\xslt.pxd" />
+    <Content Include="lxml\isoschematron\resources\rng\iso-schematron.rng" />
+    <Content Include="lxml\isoschematron\resources\xsl\iso-schematron-xslt1\iso_abstract_expand.xsl" />
+    <Content Include="lxml\isoschematron\resources\xsl\iso-schematron-xslt1\iso_dsdl_include.xsl" />
+    <Content Include="lxml\isoschematron\resources\xsl\iso-schematron-xslt1\iso_schematron_message.xsl" />
+    <Content Include="lxml\isoschematron\resources\xsl\iso-schematron-xslt1\iso_schematron_skeleton_for_xslt1.xsl" />
+    <Content Include="lxml\isoschematron\resources\xsl\iso-schematron-xslt1\iso_svrl_for_xslt1.xsl" />
+    <Content Include="lxml\isoschematron\resources\xsl\iso-schematron-xslt1\readme.txt" />
+    <Content Include="lxml\isoschematron\resources\xsl\RNG2Schtrn.xsl" />
+    <Content Include="lxml\isoschematron\resources\xsl\XSD2Schtrn.xsl" />
+    <Content Include="lxml\iterparse.pxi" />
+    <Content Include="lxml\lxml.etree.c" />
+    <Content Include="lxml\lxml.etree.h" />
+    <Content Include="lxml\lxml.etree.pyx" />
+    <Content Include="lxml\lxml.etree_api.h" />
+    <Content Include="lxml\lxml.objectify.c" />
+    <Content Include="lxml\lxml.objectify.pyx" />
+    <Content Include="lxml\lxml_endian.h" />
+    <Content Include="lxml\nsclasses.pxi" />
+    <Content Include="lxml\objectpath.pxi" />
+    <Content Include="lxml\parser.pxi" />
+    <Content Include="lxml\parsertarget.pxi" />
+    <Content Include="lxml\proxy.pxi" />
+    <Content Include="lxml\public-api.pxi" />
+    <Content Include="lxml\python.pxd" />
+    <Content Include="lxml\readonlytree.pxi" />
+    <Content Include="lxml\relaxng.pxi" />
+    <Content Include="lxml\saxparser.pxi" />
+    <Content Include="lxml\schematron.pxi" />
+    <Content Include="lxml\serializer.pxi" />
+    <Content Include="lxml\tests\include\test_xinclude.xml" />
+    <Content Include="lxml\tests\shakespeare.html" />
+    <Content Include="lxml\tests\test-document.xslt" />
+    <Content Include="lxml\tests\test-string.xml" />
+    <Content Include="lxml\tests\test.dtd" />
+    <Content Include="lxml\tests\test.sch" />
+    <Content Include="lxml\tests\test.xml" />
+    <Content Include="lxml\tests\test.xsd" />
+    <Content Include="lxml\tests\test1.rng" />
+    <Content Include="lxml\tests\test1.xslt" />
+    <Content Include="lxml\tests\test2.rng" />
+    <Content Include="lxml\tests\test2.xslt" />
+    <Content Include="lxml\tests\test_broken.xml" />
+    <Content Include="lxml\tests\test_import.xsd" />
+    <Content Include="lxml\tests\test_inc.xsd" />
+    <Content Include="lxml\xinclude.pxi" />
+    <Content Include="lxml\xmlerror.pxi" />
+    <Content Include="lxml\xmlid.pxi" />
+    <Content Include="lxml\xmlschema.pxi" />
+    <Content Include="lxml\xpath.pxi" />
+    <Content Include="lxml\xslt.pxi" />
+    <Content Include="lxml\xsltext.pxi" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <PtvsTargetsFile>$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets</PtvsTargetsFile>
+  </PropertyGroup>
+  <Import Condition="Exists($(PtvsTargetsFile))" Project="$(PtvsTargetsFile)" />
+  <Import Condition="!Exists($(PtvsTargetsFile))" Project="$(MSBuildToolsPath)\Microsoft.Common.targets" />
+  <!-- Uncomment the CoreCompile target to enable the Build command in
+       Visual Studio and specify your pre- and post-build commands in
+       the BeforeBuild and AfterBuild targets below. -->
+  <!--<Target Name="CoreCompile" />-->
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+</Project>
