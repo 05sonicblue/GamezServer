@@ -268,11 +268,14 @@
     <Content Include="cherrypy\tutorial\tutorial.conf" />
     <Content Include="GamezServer.db" />
     <Content Include="GamezServer.ini" />
+    <Content Include="GamezServer\static-web\scripts\chosen.jquery.js" />
     <Content Include="GamezServer\static-web\scripts\dataTables.jqueryui.js" />
     <Content Include="GamezServer\static-web\scripts\jquery-ui.js" />
     <Content Include="GamezServer\static-web\scripts\jquery.dataTables.js" />
     <Content Include="GamezServer\static-web\scripts\jquery.js" />
     <Content Include="GamezServer\static-web\scripts\Menu.js" />
+    <Content Include="GamezServer\static-web\scripts\toastr.js" />
+    <Content Include="GamezServer\static-web\styles\chosen.css" />
     <Content Include="GamezServer\static-web\styles\dataTables.jqueryui.css" />
     <Content Include="GamezServer\static-web\styles\images\favicon.ico" />
     <Content Include="GamezServer\static-web\styles\images\Sorting icons.psd" />
@@ -300,6 +303,7 @@
     <Content Include="GamezServer\static-web\styles\jquery.dataTables.css" />
     <Content Include="GamezServer\static-web\styles\jquery.dataTables_themeroller.css" />
     <Content Include="GamezServer\static-web\styles\Menu.css" />
+    <Content Include="GamezServer\static-web\styles\toastr.css" />
     <Content Include="lxml\apihelpers.pxi" />
     <Content Include="lxml\classlookup.pxi" />
     <Content Include="lxml\cleanup.pxi" />

@@ -7,24 +7,64 @@ class WebServe(object):
 
     @cherrypy.expose
     def index(self):
-        return """
-            <link href='static/styles/Menu.css' rel='stylesheet' />
-            <div id='cssmenu'>
-                <ul>
-                    <li class='active align-center'>
-                        <a href='#'><span>Home</span></a>
-                    </li>
-                    <li class='active has-sub'><a href='#'><span>Settings</span></a>
-                        <ul>
-                            <li class='has-sub'><a href='#'><span>Notifications</span></a></li>
-                        </ul>
-                    </li>
-                    <li class='active align-center'>
-                        <a href='/Log'><span>Log</span></a>
-                    </li>
-                </ul>
+        currentHeaderContent = GamezServer.DAO.DAO.GetSiteMasterData("HeaderContents")
+        content = ""
+        content = content + currentHeaderContent
+        return content
+
+    @cherrypy.expose
+    def SaveSettings(self,headerContent=None):
+        try:
+            if(headerContent != None):
+                GamezServer.DAO.DAO.UpdateMasterSiteData(headerContent)
+            return "Settings Saved"
+        except:
+            e = sys.exc_info()[0]
+            return "Error: " + e
+    
+    @cherrypy.expose
+    def Settings(self):
+        currentHeaderContent = GamezServer.DAO.DAO.GetSiteMasterData("HeaderContents")
+        content = ""
+        content = content + currentHeaderContent
+        content = content + """
+            
+            <br />
+            <div id="settingsTabs" align="right">
+              <ul>
+                <li><a href="#gamezserver-tab">Gamez Server</a></li>
+              </ul>
+              <div id="gamezserver-tab">
+                <button id="saveButton">Save</button>
+                <fieldset align="left">
+                    <legend>General</legend>
+                    <label for="headerContent">Header Content</label>
+                    <br />
+                    <textarea name="headerContent" id="headerContent" rows="10" cols="100">"""
+        content = content + currentHeaderContent
+        content = content + """</textarea>
+                </fieldset>
+              </div>
             </div>
+             <script>
+                $(document).ready(function () {
+                    $("#settingsTabs").tabs();
+                    $("#saveButton").button();
+                    $("#saveButton").click(function () {
+                        $.ajax({
+                            type: "GET",
+                            url: "/SaveSettings?headerContent=" + encodeURIComponent($("#headerContent").val()),
+                            success: function (data) {
+                                toastr.info(data);
+                            }
+                        });
+                    });
+                });
+            </script>           
+            
+            
         """
+        return content
 
     @cherrypy.expose
     def Log(self,level=None):
@@ -33,35 +73,10 @@ class WebServe(object):
             logs = GamezServer.DAO.DAO.GetLogMessages()
         else:
             logs = GamezServer.DAO.DAO.GetLogMessages(level)
-        print(logs)
+        currentHeaderContent = GamezServer.DAO.DAO.GetSiteMasterData("HeaderContents")
         content = ""
+        content = content + currentHeaderContent
         content = content + """
-            <script src="/static/scripts/jquery.js"></script>
-            <script src="/static/scripts/jquery-ui.js"></script>
-            <script src="/static/scripts/Menu.js"></script>
-            <script src="/static/scripts/jquery.dataTables.js"></script>
-            <script src="/static/scripts/dataTables.jqueryui.js"></script>
-            <script src="/static/scripts/chosen.jquery.js"></script>
-
-            <link href="/static/styles/jquery-ui.css" rel="stylesheet" />
-            <link href="/static/styles/Menu.css" rel="stylesheet" />
-            <link href="/static/styles/dataTables.jqueryui.css" rel="stylesheet" />
-            <link href="/static/styles/chosen.css" rel="stylesheet" />
-            <div id='cssmenu'>
-                <ul>
-                    <li class='active align-center'>
-                        <a href='#'><span>Home</span></a>
-                    </li>
-                    <li class='active has-sub'><a href='#'><span>Settings</span></a>
-                        <ul>
-                            <li class='has-sub'><a href='#'><span>Notifications</span></a></li>
-                        </ul>
-                    </li>
-                    <li class='active align-center'>
-                        <a href='/Log'><span>Log</span></a>
-                    </li>
-                </ul>
-            </div>
             <br />
             <table width="100%"><tr>
                 <td>
@@ -92,7 +107,7 @@ class WebServe(object):
         content = content + "$('#levelDropDown').val('" + level + "');"
         content = content + """
                     
-                    $("#levelDropDown").chosen();
+                    $("#levelDropDown").chosen({width:100});
                     $('#levelDropDown').change(function() {
                       var selectedValue = $(this).val();
                       var pageUrl = '/Log/?level=' + selectedValue;

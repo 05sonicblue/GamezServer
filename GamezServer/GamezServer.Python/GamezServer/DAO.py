@@ -27,6 +27,8 @@ class DAO(object):
                 DAO.LogMessage("Building Tables", "Info")
                 db.execute("CREATE TABLE IF NOT EXISTS MasterPlatforms (ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,PlatformID TEXT,PlatformName TEXT,PlatformUniqueName TEXT)")
                 db.execute("CREATE TABLE IF NOT EXISTS Log (ID INTEGER PRIMARY KEY AUTOINCREMENT,Level TEXT,Message TEXT,MessageDateTime TEXT)")
+                db.execute("CREATE TABLE IF NOT EXISTS SiteMasterData (ID INTEGER PRIMARY KEY AUTOINCREMENT,Type TEXT,Content TEXT)")
+                #db.execute("INSERT INTO SiteMasterData (Type,Content) VALUES('HeaderContents','')")
                 cursor.execute('pragma user_version=0')
             return;
 
@@ -35,6 +37,7 @@ class DAO(object):
         with sqlite3.connect(GamezServer.Service.DBPATH) as db:
             cursor = db.cursor()
             cursor.execute("INSERT INTO Log(Message,Level,MessageDateTime) SELECT ?,?,datetime()", [message, level])
+    
     def GetLogMessages(level=None):
         with sqlite3.connect(GamezServer.Service.DBPATH) as db:
             cursor = db.cursor()
@@ -43,5 +46,19 @@ class DAO(object):
                 sql = sql + " WHERE Level='" + level + "'"
             cursor.execute(sql)
             results = cursor.fetchall()
-            print(results)
             return results
+
+    def GetSiteMasterData(key):
+        with sqlite3.connect(GamezServer.Service.DBPATH) as db:
+            cursor = db.cursor()
+            sql = "SELECT Content FROM SiteMasterData WHERE Type='" + key + "'"
+            cursor.execute(sql)
+            result = cursor.fetchone()
+            if(result != None):
+                return result[0]
+            else:
+                return ""
+    def UpdateMasterSiteData(headerContents):
+        with sqlite3.connect(GamezServer.Service.DBPATH) as db:
+            cursor = db.cursor()
+            cursor.execute("UPDATE SiteMasterData SET Content=? WHERE Type='HeaderContents'", [headerContents])
