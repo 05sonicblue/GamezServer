@@ -533,7 +533,7 @@ class Model(object):
             if isinstance(xml,bytes):
                 try:
                     xml = minidom.parseString(xml)
-                except Exception, e:
+                except Exception as e:
                     raise XmlError(e)
             elif isinstance(xml,unicode):
                 try:
@@ -545,12 +545,12 @@ class Model(object):
                     else:
                         encoding = encoding.group(1)
                     xml = minidom.parseString(xml.encode(encoding))
-                except Exception, e:
+                except Exception as e:
                     raise XmlError(e)
             elif hasattr(xml,"read"):
                 try:
                     xml = minidom.parse(xml)
-                except Exception, e:
+                except Exception as e:
                     raise XmlError(e)
             else:
                 raise ValueError("Can't convert that to an XML DOM node")

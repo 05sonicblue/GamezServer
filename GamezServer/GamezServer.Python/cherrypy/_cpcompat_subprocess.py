@@ -490,7 +490,7 @@ def _eintr_retry_call(func, *args):
     while True:
         try:
             return func(*args)
-        except (OSError, IOError), e:
+        except (OSError, IOError) as e:
             if e.errno == errno.EINTR:
                 continue
             raise
@@ -751,7 +751,7 @@ class Popen(object):
                 if input:
                     try:
                         self.stdin.write(input)
-                    except IOError, e:
+                    except IOError as e:
                         if e.errno != errno.EPIPE and e.errno != errno.EINVAL:
                             raise
                 self.stdin.close()
@@ -913,7 +913,7 @@ class Popen(object):
                         env,
                         cwd,
                         startupinfo)
-                except pywintypes.error, e:
+                except pywintypes.error as e:
                     # Translate pywintypes.error to WindowsError, which is
                     # a subclass of OSError.  FIXME: We should really
                     # translate errno using _sys_errlist (or similar), but
@@ -990,7 +990,7 @@ class Popen(object):
                 if input is not None:
                     try:
                         self.stdin.write(input)
-                    except IOError, e:
+                    except IOError as e:
                         if e.errno != errno.EPIPE:
                             raise
                 self.stdin.close()
@@ -1256,7 +1256,7 @@ class Popen(object):
             if data != "":
                 try:
                     _eintr_retry_call(os.waitpid, self.pid, 0)
-                except OSError, e:
+                except OSError as e:
                     if e.errno != errno.ECHILD:
                         raise
                 child_exception = pickle.loads(data)
@@ -1303,7 +1303,7 @@ class Popen(object):
             if self.returncode is None:
                 try:
                     pid, sts = _eintr_retry_call(os.waitpid, self.pid, 0)
-                except OSError, e:
+                except OSError as e:
                     if e.errno != errno.ECHILD:
                         raise
                     # This happens if SIGCLD is set to be ignored or waiting
@@ -1377,7 +1377,7 @@ class Popen(object):
             while fd2file:
                 try:
                     ready = poller.poll()
-                except select.error, e:
+                except select.error as e:
                     if e.args[0] == errno.EINTR:
                         continue
                     raise
@@ -1387,7 +1387,7 @@ class Popen(object):
                         chunk = input[input_offset: input_offset + _PIPE_BUF]
                         try:
                             input_offset += os.write(fd, chunk)
-                        except OSError, e:
+                        except OSError as e:
                             if e.errno == errno.EPIPE:
                                 close_unregister_and_remove(fd)
                             else:
@@ -1426,7 +1426,7 @@ class Popen(object):
                 try:
                     rlist, wlist, xlist = select.select(
                         read_set, write_set, [])
-                except select.error, e:
+                except select.error as e:
                     if e.args[0] == errno.EINTR:
                         continue
                     raise
@@ -1435,7 +1435,7 @@ class Popen(object):
                     chunk = input[input_offset: input_offset + _PIPE_BUF]
                     try:
                         bytes_written = os.write(self.stdin.fileno(), chunk)
-                    except OSError, e:
+                    except OSError as e:
                         if e.errno == errno.EPIPE:
                             self.stdin.close()
                             write_set.remove(self.stdin)
@@ -1484,8 +1484,8 @@ def _demo_posix():
     # Example 1: Simple redirection: Get process list
     #
     plist = Popen(["ps"], stdout=PIPE).communicate()[0]
-    print "Process list:"
-    print plist
+    print("Process list:")
+    print(plist)
 
     #
     # Example 2: Change uid before executing child
@@ -1497,25 +1497,25 @@ def _demo_posix():
     #
     # Example 3: Connecting several subprocesses
     #
-    print "Looking for 'hda'..."
+    print("Looking for 'hda'...")
     p1 = Popen(["dmesg"], stdout=PIPE)
     p2 = Popen(["grep", "hda"], stdin=p1.stdout, stdout=PIPE)
-    print repr(p2.communicate()[0])
+    print(repr(p2.communicate()[0]))
 
     #
     # Example 4: Catch execution error
     #
     print
-    print "Trying a weird file..."
+    print("Trying a weird file...")
     try:
-        print Popen(["/this/path/does/not/exist"]).communicate()
-    except OSError, e:
+        print(Popen(["/this/path/does/not/exist"]).communicate())
+    except OSError as e:
         if e.errno == errno.ENOENT:
-            print "The file didn't exist.  I thought so..."
-            print "Child traceback:"
-            print e.child_traceback
+            print("The file didn't exist.  I thought so...")
+            print("Child traceback:")
+            print(e.child_traceback)
         else:
-            print "Error", e.errno
+            print("Error", e.errno)
     else:
         print >>sys.stderr, "Gosh.  No error."
 
@@ -1524,15 +1524,15 @@ def _demo_windows():
     #
     # Example 1: Connecting several subprocesses
     #
-    print "Looking for 'PROMPT' in set output..."
+    print("Looking for 'PROMPT' in set output...")
     p1 = Popen("set", stdout=PIPE, shell=True)
     p2 = Popen('find "PROMPT"', stdin=p1.stdout, stdout=PIPE)
-    print repr(p2.communicate()[0])
+    print(repr(p2.communicate()[0]))
 
     #
     # Example 2: Simple execution of program
     #
-    print "Executing calc..."
+    print("Executing calc...")
     p = Popen("calc")
     p.wait()
 

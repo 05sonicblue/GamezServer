@@ -1,4 +1,0 @@
-C:\Personal\Github\GamezServer\GamezServer\GamezServer.DomainObject\bin\Debug\GamezServer.DomainObject.dll
-C:\Personal\Github\GamezServer\GamezServer\GamezServer.DomainObject\bin\Debug\GamezServer.DomainObject.pdb
-C:\Personal\Github\GamezServer\GamezServer\GamezServer.DomainObject\obj\Debug\GamezServer.DomainObject.dll
-C:\Personal\Github\GamezServer\GamezServer\GamezServer.DomainObject\obj\Debug\GamezServer.DomainObject.pdb

@@ -140,6 +140,12 @@
     <Compile Include="GamezServer\DAO.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="GamezServer\Searchers.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="GamezServer\UsenetCrawler.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="GamezServer\Service.py">
       <SubType>Code</SubType>
     </Compile>
@@ -218,6 +224,17 @@
     <Compile Include="lxml\usedoctest.py" />
     <Compile Include="lxml\_elementpath.py" />
     <Compile Include="lxml\__init__.py" />
+    <Compile Include="OpenSSL\test\test_crypto.py" />
+    <Compile Include="OpenSSL\test\test_rand.py" />
+    <Compile Include="OpenSSL\test\test_ssl.py" />
+    <Compile Include="OpenSSL\test\util.py" />
+    <Compile Include="OpenSSL\test\__init__.py" />
+    <Compile Include="OpenSSL\tsafe.py" />
+    <Compile Include="OpenSSL\version.py" />
+    <Compile Include="OpenSSL\__init__.py" />
+    <Compile Include="post-process\GamezServerPostProcess.py">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="cherrypy\" />
@@ -248,6 +265,12 @@
     <Folder Include="lxml\isoschematron\resources\xsl\iso-schematron-xslt1\" />
     <Folder Include="lxml\tests\" />
     <Folder Include="lxml\tests\include\" />
+    <Folder Include="post-process\" />
+    <Folder Include="OpenSSL\" />
+    <Folder Include="OpenSSL\crypto\" />
+    <Folder Include="OpenSSL\rand\" />
+    <Folder Include="OpenSSL\ssl\" />
+    <Folder Include="OpenSSL\test\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="cherrypy\cherryd" />
@@ -268,15 +291,20 @@
     <Content Include="cherrypy\tutorial\tutorial.conf" />
     <Content Include="GamezServer.db" />
     <Content Include="GamezServer.ini" />
+    <Content Include="GamezServer\static-web\scripts\ajax-mocks.js" />
     <Content Include="GamezServer\static-web\scripts\chosen.jquery.js" />
     <Content Include="GamezServer\static-web\scripts\dataTables.jqueryui.js" />
+    <Content Include="GamezServer\static-web\scripts\dataTables.tableTools.js" />
     <Content Include="GamezServer\static-web\scripts\jquery-ui.js" />
+    <Content Include="GamezServer\static-web\scripts\jquery.cascadingdropdown.js" />
     <Content Include="GamezServer\static-web\scripts\jquery.dataTables.js" />
     <Content Include="GamezServer\static-web\scripts\jquery.js" />
+    <Content Include="GamezServer\static-web\scripts\jquery.mockjax.js" />
     <Content Include="GamezServer\static-web\scripts\Menu.js" />
     <Content Include="GamezServer\static-web\scripts\toastr.js" />
     <Content Include="GamezServer\static-web\styles\chosen.css" />
     <Content Include="GamezServer\static-web\styles\dataTables.jqueryui.css" />
+    <Content Include="GamezServer\static-web\styles\dataTables.tableTools.css" />
     <Content Include="GamezServer\static-web\styles\images\favicon.ico" />
     <Content Include="GamezServer\static-web\styles\images\Sorting icons.psd" />
     <Content Include="GamezServer\static-web\styles\images\sort_asc.png" />
@@ -433,6 +461,42 @@
     <Content Include="lxml\xpath.pxi" />
     <Content Include="lxml\xslt.pxi" />
     <Content Include="lxml\xsltext.pxi" />
+    <Content Include="OpenSSL\crypto\crl.c" />
+    <Content Include="OpenSSL\crypto\crl.h" />
+    <Content Include="OpenSSL\crypto\crypto.c" />
+    <Content Include="OpenSSL\crypto\crypto.h" />
+    <Content Include="OpenSSL\crypto\netscape_spki.c" />
+    <Content Include="OpenSSL\crypto\netscape_spki.h" />
+    <Content Include="OpenSSL\crypto\pkcs12.c" />
+    <Content Include="OpenSSL\crypto\pkcs12.h" />
+    <Content Include="OpenSSL\crypto\pkcs7.c" />
+    <Content Include="OpenSSL\crypto\pkcs7.h" />
+    <Content Include="OpenSSL\crypto\pkey.c" />
+    <Content Include="OpenSSL\crypto\pkey.h" />
+    <Content Include="OpenSSL\crypto\revoked.c" />
+    <Content Include="OpenSSL\crypto\revoked.h" />
+    <Content Include="OpenSSL\crypto\x509.c" />
+    <Content Include="OpenSSL\crypto\x509.h" />
+    <Content Include="OpenSSL\crypto\x509ext.c" />
+    <Content Include="OpenSSL\crypto\x509ext.h" />
+    <Content Include="OpenSSL\crypto\x509name.c" />
+    <Content Include="OpenSSL\crypto\x509name.h" />
+    <Content Include="OpenSSL\crypto\x509req.c" />
+    <Content Include="OpenSSL\crypto\x509req.h" />
+    <Content Include="OpenSSL\crypto\x509store.c" />
+    <Content Include="OpenSSL\crypto\x509store.h" />
+    <Content Include="OpenSSL\py3k.h" />
+    <Content Include="OpenSSL\pymemcompat.h" />
+    <Content Include="OpenSSL\rand\rand.c" />
+    <Content Include="OpenSSL\RATIONALE" />
+    <Content Include="OpenSSL\ssl\connection.c" />
+    <Content Include="OpenSSL\ssl\connection.h" />
+    <Content Include="OpenSSL\ssl\context.c" />
+    <Content Include="OpenSSL\ssl\context.h" />
+    <Content Include="OpenSSL\ssl\ssl.c" />
+    <Content Include="OpenSSL\ssl\ssl.h" />
+    <Content Include="OpenSSL\util.c" />
+    <Content Include="OpenSSL\util.h" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
