@@ -7,8 +7,10 @@ from GamezServer.DAO import DAO
 from GamezServer.Task import Task
 import urllib2
 import json
+import urllib
 from distutils import version
 from distutils.version import StrictVersion
+import tarfile
 class WebServe(object):
     """description of class"""
 
@@ -20,8 +22,8 @@ class WebServe(object):
         updatePath = os.path.join(appPath,"update")
         if not os.path.exists(updatePath):     
             os.makedirs(updatePath)
-        data = urllib2.urlopen(tagUrl)
-        downloadPath = os.path.join(app_path,data.geturl().split('/')[-1])
+        data = urllib2.urlopen(downloadUrl)
+        downloadPath = os.path.join(appPath,data.geturl().split('/')[-1])
         downloadedFile = open(downloadPath,'wb')
         downloadedFile.write(data.read())
         downloadedFile.close()
@@ -35,13 +37,15 @@ class WebServe(object):
             dirname = dirname[len(updatedFilesPath)+1:]
             for file in filenames:
                 src = os.path.join(updatedFilesPath,dirname,file)
-                dest = os.path.join(app_path,dirname,file)
+                dest = os.path.join(appPath,dirname,file)
                 if((file in filesToIgnoreSet) == True):
                     continue
                 if(os.path.isfile(dest)):
                     os.remove(dest)
                 os.renames(src,dest)
         shutil.rmtree(updatePath)
+        dao = DAO()
+        dao.UpdateMasterSiteData("currentVersion",newVersion)
         return "Gamez Server updated to V." + newVersion
 
     @cherrypy.expose
@@ -61,10 +65,10 @@ class WebServe(object):
             releaseVersion = jsonRelease['tag_name']
             if(StrictVersion(releaseVersion) > StrictVersion(highestVersion)):
                highestVersion = releaseVersion
-               upgradeVersionUrl = jsonRelease['zipball_url']
+               upgradeVersionUrl = jsonRelease['tarball_url']
                upgradeVersionDescription = jsonRelease['body']
         if(StrictVersion(highestVersion) > StrictVersion(currentVersion) and upgradeVersionUrl != ""):
-            return "GamezServer v." + highestVersion + " is available. Release Notes: " + upgradeVersionDescription + ". Click <a href='/upgradeGamezServer&=downloadUrl=" + upgradeVersionUrl + "&newVersion=" + highestVersion  + "'>Here</a> to upgrade"
+            return "GamezServer v." + highestVersion + " is available. Release Notes: " + upgradeVersionDescription + ". Click <a href='/upgradeGamezServer?downloadUrl=" + urllib.quote_plus(upgradeVersionUrl) + "&newVersion=" + highestVersion  + "'>Here</a> to upgrade"
         return ""
 
     @cherrypy.expose
@@ -72,8 +76,10 @@ class WebServe(object):
         dao = DAO()
         wantedGames = dao.GetWantedGames()
         currentHeaderContent = dao.GetSiteMasterData("HeaderContents")
+        currentFooterContent = dao.GetSiteMasterData("FooterContents")
+        currentVersion = dao.GetSiteMasterData("currentVersion")
         content = ""
-        content = content + currentHeaderContent
+        content = content + currentHeaderContent.format(currentVersion)
         if(statusMessage != None):
             content = content + "<script>$(document).ready(function () {toastr.info('" + statusMessage + "');});</script>"
         content = content + """
@@ -100,11 +106,24 @@ class WebServe(object):
         content = content + "</tbody>"
         content = content + """
             </table>
-            <div id="bottom" />
+            <br />
+            """
+        content = content + currentFooterContent.format(currentVersion)
+        content = content + """
             <script>
                 $(document).ready(function () {
                     $('#wantedGamesTable').dataTable({
                         "pagingType": "full_numbers"
+                    });
+                    $.ajax({
+                        type: "GET",
+                        url: '/checkForVersion',
+                        success: function (data) {
+                            if(data != "")
+                            {
+                                toastr.info(data);
+                            }
+                        }
                     });
                 });
             </script>
@@ -351,11 +370,13 @@ class WebServe(object):
             return e
 
     @cherrypy.expose
-    def SaveSettings(self,headerContent=None,usenetCrawlerEnabled=None,usenetCrawlerApiKey=None,searcherPriority=None,sabnzbdEnabled=None,sabnzbdBaseUrl=None,sabnzbdApiKey=None,sabnzbdCategory=None,destinationFolder=None):
+    def SaveSettings(self,headerContent=None,usenetCrawlerEnabled=None,usenetCrawlerApiKey=None,searcherPriority=None,sabnzbdEnabled=None,sabnzbdBaseUrl=None,sabnzbdApiKey=None,sabnzbdCategory=None,destinationFolder=None,footerContent=None):
         try:
             dao = DAO()
             if(headerContent != None):
                 dao.UpdateMasterSiteData("HeaderContents", headerContent)
+            if(footerContent != None):
+                dao.UpdateMasterSiteData("FooterContents", footerContent)
             if(usenetCrawlerEnabled != None):
                 dao.UpdateMasterSiteData("usenetCrawlerEnabled", usenetCrawlerEnabled)
             if(usenetCrawlerApiKey != None):
@@ -381,6 +402,7 @@ class WebServe(object):
     def Settings(self):
         dao = DAO()
         currentHeaderContent = dao.GetSiteMasterData("HeaderContents")
+        currentFooterContent = dao.GetSiteMasterData("FooterContents")
 
         usenetCrawlerEnabled = dao.GetSiteMasterData("usenetCrawlerEnabled")
         usenetCrawlerApiKey = dao.GetSiteMasterData("usenetCrawlerApiKey")
@@ -424,6 +446,12 @@ class WebServe(object):
                     <br />
                     <textarea name="headerContent" id="headerContent" rows="10" cols="100">"""
         content = content + currentHeaderContent
+        content = content + """</textarea>
+                    <br /><br />
+                    <label for="footerContent">Footer Content</label>
+                    <br />
+                    <textarea name="footerContent" id="footerContent" rows="10" cols="100">"""
+        content = content + currentFooterContent
         content = content + """</textarea>
                 </fieldset>
               </div>
@@ -622,8 +650,8 @@ class WebServe(object):
                         assembledUrl = assembledUrl + "&sabnzbdApiKey=" + $("#sabnzbdApiKey").val();
                         assembledUrl = assembledUrl + "&sabnzbdCategory=" + $("#sabnzbdCategory").val();
                         assembledUrl = assembledUrl + "&destinationFolder=" + $("#destinationFolder").val();
+                        assembledUrl = assembledUrl + "&footerContent=" + encodeURIComponent($("#footerContent").val())
 
-                        alert(assembledUrl);
                         $.ajax({
                             type: "GET",
                             url: assembledUrl,

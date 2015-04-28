@@ -27,7 +27,7 @@ class Service(object):
         Monitor(cherrypy.engine, GamezServer.Task.Task().WantedGameSearch, frequency=86400).subscribe()
         dao.LogMessage("Starting Service", "Info")
         cherrypy.engine.start()
-        webbrowser.open("http://" + cherrypy.server.socket_host + ":" + str(cherrypy.server.socket_port) + '/checkForVersion')
+        webbrowser.open("http://" + cherrypy.server.socket_host + ":" + str(cherrypy.server.socket_port) + '/')
         cherrypy.engine.block()
         
         

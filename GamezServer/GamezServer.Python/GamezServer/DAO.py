@@ -39,7 +39,8 @@ class DAO(object):
                 db.execute("CREATE TABLE IF NOT EXISTS SearcherPriority (ID INTEGER PRIMARY KEY AUTOINCREMENT,Searcher TEXT,SortOrder INTEGER)")
                 db.execute("CREATE TABLE IF NOT EXISTS SearcherHistory (ID INTEGER PRIMARY KEY AUTOINCREMENT,Searcher TEXT,SearcherID TEXT)")
                 db.execute("INSERT INTO SiteMasterData (Type,Content) SELECT 'HeaderContents','' WHERE NOT EXISTS(SELECT 1 FROM SiteMasterData WHERE Type='HeaderContents')")
-                cursor.execute('pragma user_version=0')
+                db.execute("INSERT INTO SiteMasterData (Type,Content) SELECT 'currentVersion','0.0.1' WHERE NOT EXISTS(SELECT 1 FROM SiteMasterData WHERE Type='currentVersion')")
+                cursor.execute('pragma user_version=1')
             return;
 
     def LogMessage(self,message, level):
