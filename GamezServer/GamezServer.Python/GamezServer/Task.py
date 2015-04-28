@@ -60,7 +60,7 @@ class Task(object):
         dao = DAO()
         dao.LogMessage("Updating Master Platforms", "Info")
         webRequest = urllib.request.Request('http://thegamesdb.net/api/GetPlatformsList.php', headers={'User-Agent' : "Magic Browser"})
-        response
+        response = urllib2.urlopen(urllib2.urlopen(webRequest))
         platformData = response.read()
         treeData =ElementTree.fromstring(platformData)
         for matchedElement in treeData.findall('./Platforms/Platform'):

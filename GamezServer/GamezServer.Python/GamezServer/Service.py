@@ -7,11 +7,12 @@ import GamezServer
 from GamezServer.DAO import DAO
 from GamezServer.Task import Task
 DBPATH=""
+APPPATH=""
 class Service(object):
     def Start(self,configPath):
         rootPath = os.path.dirname(configPath)
         GamezServer.Service.DBPATH = os.path.join(rootPath, "GamezServer.db")
-        
+        GamezServer.Service.APPPATH = rootPath
         dao = DAO()
         dao.VerifyStructue()
 
@@ -26,7 +27,7 @@ class Service(object):
         Monitor(cherrypy.engine, GamezServer.Task.Task().WantedGameSearch, frequency=86400).subscribe()
         dao.LogMessage("Starting Service", "Info")
         cherrypy.engine.start()
-        webbrowser.open("http://" + cherrypy.server.socket_host + ":" + str(cherrypy.server.socket_port))
+        webbrowser.open("http://" + cherrypy.server.socket_host + ":" + str(cherrypy.server.socket_port) + '/checkForVersion')
         cherrypy.engine.block()
         
         

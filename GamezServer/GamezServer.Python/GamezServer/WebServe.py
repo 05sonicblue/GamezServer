@@ -5,8 +5,67 @@ import GamezServer
 import sys
 from GamezServer.DAO import DAO
 from GamezServer.Task import Task
+import urllib2
+import json
+from distutils import version
+from distutils.version import StrictVersion
 class WebServe(object):
     """description of class"""
+
+    @cherrypy.expose
+    def upgradeGamezServer(self, downloadUrl, newVersion):
+        appPath = GamezServer.Service.APPPATH
+        filesToIgnore = ["GamezServer.ini","GamezServer.db"]
+        filesToIgnoreSet = set(filesToIgnore)
+        updatePath = os.path.join(appPath,"update")
+        if not os.path.exists(updatePath):     
+            os.makedirs(updatePath)
+        data = urllib2.urlopen(tagUrl)
+        downloadPath = os.path.join(app_path,data.geturl().split('/')[-1])
+        downloadedFile = open(downloadPath,'wb')
+        downloadedFile.write(data.read())
+        downloadedFile.close()
+        tarredFile = tarfile.open(downloadPath)
+        tarredFile.extractall(updatePath)
+        tarredFile.close()
+        os.remove(downloadPath)
+        contentsDir = [x for x in os.listdir(updatePath) if os.path.isdir(os.path.join(updatePath, x))]
+        updatedFilesPath = os.path.join(updatePath,contentsDir[0])
+        for dirname, dirnames, filenames in os.walk(updatedFilesPath):
+            dirname = dirname[len(updatedFilesPath)+1:]
+            for file in filenames:
+                src = os.path.join(updatedFilesPath,dirname,file)
+                dest = os.path.join(app_path,dirname,file)
+                if((file in filesToIgnoreSet) == True):
+                    continue
+                if(os.path.isfile(dest)):
+                    os.remove(dest)
+                os.renames(src,dest)
+        shutil.rmtree(updatePath)
+        return "Gamez Server updated to V." + newVersion
+
+    @cherrypy.expose
+    def checkForVersion(self):
+        dao = DAO()
+        currentVersion = dao.GetSiteMasterData("currentVersion")
+        if(currentVersion == None or currentVersion == ""):
+            currentVersion = '0.0.0'
+        webRequest = urllib2.Request('https://api.github.com/repos/mdlesk/GamezServer/releases', headers={'User-Agent' : "Magic Browser", "Accept" : "application/vnd.github.v3+json"})
+        response = urllib2.urlopen(webRequest)
+        githubReleaseData = response.read()
+        jsonReleaseData = json.loads(githubReleaseData)
+        highestVersion = currentVersion
+        upgradeVersionDescription = ""
+        upgradeVersionUrl = ""
+        for jsonRelease in jsonReleaseData:
+            releaseVersion = jsonRelease['tag_name']
+            if(StrictVersion(releaseVersion) > StrictVersion(highestVersion)):
+               highestVersion = releaseVersion
+               upgradeVersionUrl = jsonRelease['zipball_url']
+               upgradeVersionDescription = jsonRelease['body']
+        if(StrictVersion(highestVersion) > StrictVersion(currentVersion) and upgradeVersionUrl != ""):
+            return "GamezServer v." + highestVersion + " is available. Release Notes: " + upgradeVersionDescription + ". Click <a href='/upgradeGamezServer&=downloadUrl=" + upgradeVersionUrl + "&newVersion=" + highestVersion  + "'>Here</a> to upgrade"
+        return ""
 
     @cherrypy.expose
     def index(self,statusMessage=None):

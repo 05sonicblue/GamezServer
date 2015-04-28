@@ -137,6 +137,9 @@
     <Compile Include="dexml\test.py" />
     <Compile Include="dexml\__init__.py" />
     <Compile Include="GamezServer.py" />
+    <Compile Include="GamezServer\Constants.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="GamezServer\DAO.py">
       <SubType>Code</SubType>
     </Compile>
