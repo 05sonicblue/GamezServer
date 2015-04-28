@@ -9,18 +9,19 @@ Current Functionality:
 * Add Individual Game
 * Add All Games by Platform
 * Configurable Header
+* Configurable Footer
 * Sabnzbd+ Integration
 * Usenet-Crawler Search Provider
 * Simple Post Processing
 * Force Search
 * Force Search for new (previously un-snatched)
 * Configurable Search Provider Search Order
+* Automated Upgrade Search and One-Click Upgrade
 
 Future Plans
 * Additional Search Providers
 * Add Blackhole Torrent Downloader
 * Add Notifications
-* Add version update
 * Auto-Search Game When Added
 * Configuration to always try new version
 * Don't show games to add when they are already added
