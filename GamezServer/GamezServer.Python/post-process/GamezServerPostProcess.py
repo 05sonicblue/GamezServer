@@ -10,7 +10,7 @@ try:
         print('Unable to parse game ID')
         sys.exit(1)
     sourceFolder = sys.argv[1]
-    webRequest = urllib2.Request('http://192.168.1.16:8085/PostProcess?gameId=' + str(gameId) + '&processDir=' + urllib.quote_plus(sourceFolder), headers={'User-Agent' : "GamezServer"})
+    webRequest = urllib2.Request('http://127.0.0.1:8085/PostProcess?gameId=' + str(gameId) + '&processDir=' + urllib.quote_plus(sourceFolder), headers={'User-Agent' : "GamezServer"})
     response = urllib2.urlopen(webRequest)
     responseData = response.read()
     print(responseData)

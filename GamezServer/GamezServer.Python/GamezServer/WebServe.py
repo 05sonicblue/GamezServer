@@ -304,10 +304,14 @@ class WebServe(object):
 
     @cherrypy.expose
     def PostProcess(self,gameId,processDir):
+        result = ''
+        processDir = urllib.unquote_plus(processDir)
+        result = result + 'Processing folder: ' + processDir + '\n'
         dao = DAO()
         game = dao.GetWantedGame(gameId)
         platform = game[1]
         gameTitle = game[2]
+        result = result + 'Processing Game: ' + gameTitle + '\n'
         destFolderRoot = dao.GetSiteMasterData("destinationFolder")
         if 'win' in sys.platform:
             destFolderRoot = destFolderRoot[1:]
@@ -316,12 +320,16 @@ class WebServe(object):
         destFolderPlatform = os.path.join(destFolderRoot, platform)
         destFolderGame = os.path.join(destFolderPlatform, gameTitle)
         if not os.path.exists(destFolderGame):
+            result = result + 'Creating Game Folder\n'
             os.makedirs(destFolderGame)
         if(os.path.exists(processDir)):
            for file in os.listdir(processDir):
-             if os.path.isfile(file):
-                shutil.copy2(file, destFolderGame)
-        return "Processed " + gameTitle + " Succesfully"
+               fileToProcess = os.path.join(processDir, file)
+               if(os.path.isfile(fileToProcess)):
+                   result = result + 'Copying file: ' + file + '\n'
+                   shutil.copy2(fileToProcess, destFolderGame)
+        result = result + "Processed " + gameTitle + " Succesfully"
+        return result
 
     @cherrypy.expose
     def AddWantedGame(self, platformId, gameId):
