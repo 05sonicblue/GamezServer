@@ -72,7 +72,7 @@ class WebServe(object):
         return ""
 
     @cherrypy.expose
-    def index(self,statusMessage=None):
+    def index(self,statusMessage=None,addedGameId=None):
         dao = DAO()
         wantedGames = dao.GetWantedGames()
         currentHeaderContent = dao.GetSiteMasterData("HeaderContents")
@@ -125,6 +125,26 @@ class WebServe(object):
                             }
                         }
                     });
+        """
+        if(addedGameId != None):
+            for item in str(addedGameId).split(','):
+                addedGame = dao.GetWantedGame(item)
+                if(addedGame != None):
+                    content = content + """
+                            toastr.info('Searching for game """ + str(addedGame[2]).replace("'", "\\'") + """');
+                            forceSearchUrl = '/ForceSearch?gameId=""" + str(addedGame[0]) + """';
+                            $.ajax({
+                                type: 'GET',
+                                url: forceSearchUrl,
+                                success: function (data) {
+                                    toastr.info(data);
+                                },
+                                error: function (xhr, ajaxOptions, thrownError) {
+                                    toastr.info('Unable to force search: ' + thrownError);
+                                }
+                            });
+                    """
+        content = content + """
                 });
             </script>
         """
@@ -334,17 +354,21 @@ class WebServe(object):
     @cherrypy.expose
     def AddWantedGame(self, platformId, gameId):
         dao = DAO()
-        dao.AddWantedGame(platformId, gameId, "Wanted")
-        raise cherrypy.HTTPRedirect("/?statusMessage=Game Added")
+        wantedGameId = dao.AddWantedGame(platformId, gameId, "Wanted")
+        raise cherrypy.HTTPRedirect("/?statusMessage=Game Added&addedGameId=" + str(wantedGameId[0]))
 
     @cherrypy.expose
     def AddWantedGameByPlatform(self, platformId):
         dao = DAO()
         gamesList = dao.GetMasterGames(platformId)
+        wantedGameIds = ''
         for game in gamesList:
             gameId = game[1]
-            dao.AddWantedGame(platformId, gameId, "Wanted")
-        raise cherrypy.HTTPRedirect("/?statusMessage=Games Added")
+            wantedGameIds = wantedGameIds + str(dao.AddWantedGame(platformId, gameId, "Wanted")[0]) + ','
+        print wantedGameIds
+        if(len(wantedGameIds) > 0):
+            wantedGameIds = wantedGameIds[:-1]
+        raise cherrypy.HTTPRedirect("/?statusMessage=Games Added&addedGameId=" + wantedGameIds)
 
     @cherrypy.expose
     def GetFolders(self,folderPath,upDirectory):

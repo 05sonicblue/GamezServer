@@ -113,7 +113,8 @@ class DAO(object):
             sql = "INSERT INTO WantedGames(PlatformID,GameID,Status) SELECT ?,?,? WHERE NOT EXISTS(SELECT 1 FROM WantedGames WHERE GameID = ? and PlatformID = ?)"
             cursor = db.cursor()
             cursor.execute(sql, [platformId, gameId, status, gameId, platformId])
-        return
+            cursor.execute("SELECT last_insert_rowid()")
+            return cursor.fetchone()
 
     def SetSearcherPriority(self,priorities):
         with sqlite3.connect(GamezServer.Service.DBPATH) as db:
