@@ -46,7 +46,8 @@ class WebServe(object):
         shutil.rmtree(updatePath)
         dao = DAO()
         dao.UpdateMasterSiteData("currentVersion",newVersion)
-        return "Gamez Server updated to V." + newVersion
+        result = "Gamez Server updated to V." + newVersion
+        raise cherrypy.HTTPRedirect("/?statusMessage=" + result)
 
     @cherrypy.expose
     def checkForVersion(self):

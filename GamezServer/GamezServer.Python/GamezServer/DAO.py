@@ -4,12 +4,6 @@ import GamezServer
 import sys
 
 class DAO(object):
-    """description of class"""
-
-
-    def DBTest(self):
-        dbPath = GamezServer.Service.DBPATH
-        return
 
     def UpdateMasterPlatform(self,platformId, platformName, platformUniqueName):
         dbPath = GamezServer.Service.DBPATH
@@ -38,6 +32,11 @@ class DAO(object):
                 db.execute("CREATE TABLE IF NOT EXISTS SiteMasterData (ID INTEGER PRIMARY KEY AUTOINCREMENT,Type TEXT,Content TEXT)")
                 db.execute("CREATE TABLE IF NOT EXISTS SearcherPriority (ID INTEGER PRIMARY KEY AUTOINCREMENT,Searcher TEXT,SortOrder INTEGER)")
                 db.execute("CREATE TABLE IF NOT EXISTS SearcherHistory (ID INTEGER PRIMARY KEY AUTOINCREMENT,Searcher TEXT,SearcherID TEXT)")
+                db.execute("INSERT INTO SiteMasterData (Type,Content) SELECT 'HeaderContents','' WHERE NOT EXISTS(SELECT 1 FROM SiteMasterData WHERE Type='HeaderContents')")
+                db.execute("INSERT INTO SiteMasterData (Type,Content) SELECT 'currentVersion','0.0.1' WHERE NOT EXISTS(SELECT 1 FROM SiteMasterData WHERE Type='currentVersion')")
+                db.execute("INSERT INTO SiteMasterData (Type,Content) SELECT 'launchBrowser','true' WHERE NOT EXISTS(SELECT 1 FROM SiteMasterData WHERE Type='launchBrowser')")
+                cursor.execute('pragma user_version=1')
+            if(version==1):
                 db.execute("INSERT INTO SiteMasterData (Type,Content) SELECT 'HeaderContents','' WHERE NOT EXISTS(SELECT 1 FROM SiteMasterData WHERE Type='HeaderContents')")
                 db.execute("INSERT INTO SiteMasterData (Type,Content) SELECT 'currentVersion','0.0.1' WHERE NOT EXISTS(SELECT 1 FROM SiteMasterData WHERE Type='currentVersion')")
                 db.execute("INSERT INTO SiteMasterData (Type,Content) SELECT 'launchBrowser','true' WHERE NOT EXISTS(SELECT 1 FROM SiteMasterData WHERE Type='launchBrowser')")
