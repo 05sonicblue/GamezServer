@@ -40,6 +40,7 @@ class DAO(object):
                 db.execute("CREATE TABLE IF NOT EXISTS SearcherHistory (ID INTEGER PRIMARY KEY AUTOINCREMENT,Searcher TEXT,SearcherID TEXT)")
                 db.execute("INSERT INTO SiteMasterData (Type,Content) SELECT 'HeaderContents','' WHERE NOT EXISTS(SELECT 1 FROM SiteMasterData WHERE Type='HeaderContents')")
                 db.execute("INSERT INTO SiteMasterData (Type,Content) SELECT 'currentVersion','0.0.1' WHERE NOT EXISTS(SELECT 1 FROM SiteMasterData WHERE Type='currentVersion')")
+                db.execute("INSERT INTO SiteMasterData (Type,Content) SELECT 'launchBrowser','true' WHERE NOT EXISTS(SELECT 1 FROM SiteMasterData WHERE Type='launchBrowser')")
                 cursor.execute('pragma user_version=1')
             return;
 
@@ -105,6 +106,13 @@ class DAO(object):
         with sqlite3.connect(GamezServer.Service.DBPATH) as db:
             cursor = db.cursor()
             cursor.execute("SELECT PlatformID,GameID,GameTitle,ReleaseDate FROM MasterGames WHERE PlatformID=" + platformId + " ORDER BY GameTitle")
+            return cursor.fetchall()
+
+    def GetUnwantedMasterGames(self,platformId):
+        dbPath = GamezServer.Service.DBPATH
+        with sqlite3.connect(GamezServer.Service.DBPATH) as db:
+            cursor = db.cursor()
+            cursor.execute("SELECT PlatformID,GameID,GameTitle,ReleaseDate FROM MasterGames WHERE GameID NOT IN (SELECT GameID FROM WantedGames) and PlatformID=" + platformId + " ORDER BY GameTitle")
             return cursor.fetchall()
 
     def AddWantedGame(self,platformId,gameId, status):

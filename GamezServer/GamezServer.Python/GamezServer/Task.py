@@ -116,6 +116,9 @@ class Task(object):
 
     def ForceGameSearch(self,gameId, forceNew=False):
         dao = DAO()
+        searchNewOnly = dao.GetSiteMasterData("onlySearchNew")
+        if(searchNewOnly != None and searchNewOnly == "true"):
+            forceNew = True
         sabnzbdEnabled = dao.GetSiteMasterData("sabnzbdEnabled")
         if(sabnzbdEnabled == "true"):
             sabnzbdApiKey = dao.GetSiteMasterData("sabnzbdApiKey")

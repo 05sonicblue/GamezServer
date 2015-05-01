@@ -154,9 +154,10 @@ class WebServe(object):
     @cherrypy.expose
     def AddByPlatform(self):
         dao = DAO()
+        currentVersion = dao.GetSiteMasterData("currentVersion")
         currentHeaderContent = dao.GetSiteMasterData("HeaderContents")
         content = ""
-        content = content + currentHeaderContent
+        content = content + currentHeaderContent.format(currentVersion)
         content = content + """
             <br />
             <div id="addGameTabs" align="left">
@@ -208,9 +209,10 @@ class WebServe(object):
     @cherrypy.expose
     def AddGame(self):
         dao = DAO()
+        currentVersion = dao.GetSiteMasterData("currentVersion")
         currentHeaderContent = dao.GetSiteMasterData("HeaderContents")
         content = ""
-        content = content + currentHeaderContent
+        content = content + currentHeaderContent.format(currentVersion)
         content = content + """
             <br />
             <div id="addGameTabs" align="left">
@@ -309,7 +311,7 @@ class WebServe(object):
     def GetGames(self, platformId):
         content = '{'
         dao = DAO()
-        games = dao.GetMasterGames(platformId)
+        games = dao.GetUnwantedMasterGames(platformId)
         for game in games:
             content = content + '"' + game[1] + '":"' + game[2] + '",'
         content = content[:-1]
@@ -402,7 +404,8 @@ class WebServe(object):
             return e
 
     @cherrypy.expose
-    def SaveSettings(self,headerContent=None,usenetCrawlerEnabled=None,usenetCrawlerApiKey=None,searcherPriority=None,sabnzbdEnabled=None,sabnzbdBaseUrl=None,sabnzbdApiKey=None,sabnzbdCategory=None,destinationFolder=None,footerContent=None):
+    def SaveSettings(self,headerContent=None,usenetCrawlerEnabled=None,usenetCrawlerApiKey=None,searcherPriority=None,sabnzbdEnabled=None,sabnzbdBaseUrl=None,
+                     sabnzbdApiKey=None,sabnzbdCategory=None,destinationFolder=None,footerContent=None,onlySearchNew=None,launchBrowser=None):
         try:
             dao = DAO()
             if(headerContent != None):
@@ -425,6 +428,10 @@ class WebServe(object):
                 dao.UpdateMasterSiteData("sabnzbdCategory", sabnzbdCategory)
             if(destinationFolder != None):
                 dao.UpdateMasterSiteData("destinationFolder", destinationFolder)
+            if(onlySearchNew != None):
+                dao.UpdateMasterSiteData("onlySearchNew", onlySearchNew)
+            if(launchBrowser != None):
+                dao.UpdateMasterSiteData("launchBrowser", launchBrowser)
             return "Settings Saved"
         except Exception as e:
             #e = sys.exc_info()[0]
@@ -433,8 +440,11 @@ class WebServe(object):
     @cherrypy.expose
     def Settings(self):
         dao = DAO()
+        currentVersion = dao.GetSiteMasterData("currentVersion")
         currentHeaderContent = dao.GetSiteMasterData("HeaderContents")
         currentFooterContent = dao.GetSiteMasterData("FooterContents")
+        onlySearchNew = dao.GetSiteMasterData("onlySearchNew")
+        launchBrowser = dao.GetSiteMasterData("launchBrowser")
 
         usenetCrawlerEnabled = dao.GetSiteMasterData("usenetCrawlerEnabled")
         usenetCrawlerApiKey = dao.GetSiteMasterData("usenetCrawlerApiKey")
@@ -454,9 +464,17 @@ class WebServe(object):
             sabnzbdEnabled = "checked"
         else:
             sabnzbdEnabled = ""
+        if(onlySearchNew == "true"):
+            onlySearchNew = "checked"
+        else:
+            onlySearchNew = ""
+        if(launchBrowser == "true"):
+            launchBrowser = "checked"
+        else:
+            launchBrowser = ""
 
         content = ""
-        content = content + currentHeaderContent
+        content = content + currentHeaderContent.format(currentVersion)
         content = content + """
             
             <br />
@@ -474,10 +492,15 @@ class WebServe(object):
                 
                 <fieldset align="left">
                     <legend>General</legend>
+                    <div>
+                        <input type="checkbox" name="launchBrowser" id="launchBrowser" """ + launchBrowser + """ />
+                        <label for="launchBrowser">Launch browser on startup</label>
+                    </div>
+                    <br />
                     <label for="headerContent">Header Content</label>
                     <br />
                     <textarea name="headerContent" id="headerContent" rows="10" cols="100">"""
-        content = content + currentHeaderContent
+        content = content + currentHeaderContent.format(currentVersion)
         content = content + """</textarea>
                     <br /><br />
                     <label for="footerContent">Footer Content</label>
@@ -485,6 +508,14 @@ class WebServe(object):
                     <textarea name="footerContent" id="footerContent" rows="10" cols="100">"""
         content = content + currentFooterContent
         content = content + """</textarea>
+                </fieldset>
+                <br />
+                <fieldset>
+                    <legend>Search Settings</legend>
+                    <div>
+                        <input type="checkbox" name="onlySearchNew" id="onlySearchNew" """ + onlySearchNew + """ />
+                        <label for="onlySearchNew">Only Search New (Ignores previously snatched items)</label>
+                    </div>
                 </fieldset>
               </div>
               <div id="downloaders-tab">
@@ -683,6 +714,8 @@ class WebServe(object):
                         assembledUrl = assembledUrl + "&sabnzbdCategory=" + $("#sabnzbdCategory").val();
                         assembledUrl = assembledUrl + "&destinationFolder=" + $("#destinationFolder").val();
                         assembledUrl = assembledUrl + "&footerContent=" + encodeURIComponent($("#footerContent").val())
+                        assembledUrl = assembledUrl + "&onlySearchNew=" + $("#onlySearchNew").is(':checked');
+                        assembledUrl = assembledUrl + "&launchBrowser=" + $("#launchBrowser").is(':checked');
 
                         $.ajax({
                             type: "GET",
@@ -709,7 +742,8 @@ class WebServe(object):
             logs = dao.GetLogMessages(level)
         currentHeaderContent = dao.GetSiteMasterData("HeaderContents")
         content = ""
-        content = content + currentHeaderContent
+        currentVersion = dao.GetSiteMasterData("currentVersion")
+        content = content + currentHeaderContent.format(currentVersion)
         content = content + """
             <br />
             <table width="100%"><tr>
