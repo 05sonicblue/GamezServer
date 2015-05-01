@@ -17,15 +17,16 @@ Current Functionality:
 * Force Search for new (previously un-snatched)
 * Configurable Search Provider Search Order
 * Automated Upgrade Search and One-Click Upgrade
+* Auto-Searches Game When Added
+* Configuration to always try new version
+* Configuration to auto-open browser on start
 
 Future Plans
 * Additional Search Providers
 * Add Blackhole Torrent Downloader
 * Add Notifications
-* Auto-Search Game When Added
-* Configuration to always try new version
-* Don't show games to add when they are already added
 * Bulk status update
-* Configuration to auto-open browser on start
 * Add Configuration to limit extensions for files copied during post process
 * Add Configuration to delete source folder after post processing is complete
+* Add Cover Art
+* Add Upcoming Releases Page
