@@ -11,6 +11,7 @@ import urllib
 from distutils import version
 from distutils.version import StrictVersion
 import tarfile
+import subprocess
 class WebServe(object):
     """description of class"""
 
@@ -327,32 +328,9 @@ class WebServe(object):
 
     @cherrypy.expose
     def PostProcess(self,gameId,processDir):
-        result = ''
         processDir = urllib.unquote_plus(processDir)
-        result = result + 'Processing folder: ' + processDir + '\n'
-        dao = DAO()
-        game = dao.GetWantedGame(gameId)
-        platform = game[1]
-        gameTitle = game[2]
-        result = result + 'Processing Game: ' + gameTitle + '\n'
-        destFolderRoot = dao.GetSiteMasterData("destinationFolder")
-        if 'win' in sys.platform:
-            destFolderRoot = destFolderRoot[1:]
-        if(destFolderRoot == None or destFolderRoot == ""):
-            return "Destination Folder Missing"
-        destFolderPlatform = os.path.join(destFolderRoot, platform)
-        destFolderGame = os.path.join(destFolderPlatform, gameTitle)
-        if not os.path.exists(destFolderGame):
-            result = result + 'Creating Game Folder\n'
-            os.makedirs(destFolderGame)
-        if(os.path.exists(processDir)):
-           for file in os.listdir(processDir):
-               fileToProcess = os.path.join(processDir, file)
-               if(os.path.isfile(fileToProcess)):
-                   result = result + 'Copying file: ' + file + '\n'
-                   shutil.copy2(fileToProcess, destFolderGame)
-        result = result + "Processed " + gameTitle + " Succesfully"
-        return result
+        task = Task()
+        return task.PostProcess(processDir, gameId)
 
     @cherrypy.expose
     def AddWantedGame(self, platformId, gameId):
@@ -406,7 +384,8 @@ class WebServe(object):
 
     @cherrypy.expose
     def SaveSettings(self,headerContent=None,usenetCrawlerEnabled=None,usenetCrawlerApiKey=None,searcherPriority=None,sabnzbdEnabled=None,sabnzbdBaseUrl=None,
-                     sabnzbdApiKey=None,sabnzbdCategory=None,destinationFolder=None,footerContent=None,onlySearchNew=None,launchBrowser=None):
+                     sabnzbdApiKey=None,sabnzbdCategory=None,destinationFolder=None,footerContent=None,onlySearchNew=None,launchBrowser=None,
+                     abgx360Region=None,abgx360Path=None,abgx360Enabled=None,xbox360Extensions=None):
         try:
             dao = DAO()
             if(headerContent != None):
@@ -433,6 +412,14 @@ class WebServe(object):
                 dao.UpdateMasterSiteData("onlySearchNew", onlySearchNew)
             if(launchBrowser != None):
                 dao.UpdateMasterSiteData("launchBrowser", launchBrowser)
+            if(abgx360Enabled != None):
+                dao.UpdateMasterSiteData("abgx360Enabled", abgx360Enabled)
+            if(abgx360Path != None):
+                dao.UpdateMasterSiteData("abgx360Path", abgx360Path)
+            if(abgx360Region != None):
+                dao.UpdateMasterSiteData("abgx360Region", abgx360Region)
+            if(xbox360Extensions != None):
+                dao.UpdateMasterSiteData("xbox360Extensions",xbox360Extensions)
             return "Settings Saved"
         except Exception as e:
             #e = sys.exc_info()[0]
@@ -457,6 +444,14 @@ class WebServe(object):
 
         destinationFolder = dao.GetSiteMasterData("destinationFolder")
 
+        abgx360Enabled = dao.GetSiteMasterData("abgx360Enabled")
+        abgx360Path = dao.GetSiteMasterData("abgx360Path")
+        abgx360Region = dao.GetSiteMasterData("abgx360Region")
+        xbox360Extensions = dao.GetSiteMasterData("xbox360Extensions")
+        
+        if(abgx360Region == None):
+            abgx360Region = ""
+
         if(usenetCrawlerEnabled == "true"):
             usenetCrawlerEnabled = "checked"
         else:
@@ -473,6 +468,10 @@ class WebServe(object):
             launchBrowser = "checked"
         else:
             launchBrowser = ""
+        if(abgx360Enabled == "true"):
+            abgx360Enabled = "checked"
+        else:
+            abgx360Enabled = ""
 
         content = ""
         content = content + currentHeaderContent.format(currentVersion)
@@ -573,6 +572,38 @@ class WebServe(object):
                     <div id="folderBrowser" title="Select Folder">
                     </div>
                 </fieldset>
+                <fieldset>
+                    <legend>XBOX 360</legend>
+                    Enable ABGX360?
+                    <input type="checkbox" id="abgx360Enabled" """ + abgx360Enabled + """ />
+                    <div id="abgx360Section" style="display:none">
+                        <div>
+                            <label for="abgx360Path">ABGX360 Path (ie: C:\\Windows\\SysWOW64\\abgx360.exe)</label>
+                            <br />
+                            <input type="text" size="50" name="abgx360Path" id="abgx360Path" value='""" + abgx360Path  + """' />
+                        </div>
+                        <br />
+                        <div>
+                            <label for="abgx360Region">Console Region</label>
+                            <br />
+                            <select id="abgx360Region" name="abgx360Region">
+                                <option value="">Any</option>
+                                <option value="000000FF">NTSC/U</option>
+                                <option value="00010000">PAL (Australia)
+                                <option value="00FE0000">PAL (Europe)</option>
+                                <option value="00000100">NTSC/J (Japan)</option>
+                                <option value="00000300">NTSC/J (China)</option>
+                                <option value="0000FC00">NTSC/J (Other)</option>
+                            </select>
+                        </div>
+                        <br />
+                        <div>
+                            <label for="xbox360Extensions">Valid Extensions</label>
+                            <br />
+                            <input type="text" size="50" id="xbox360Extensions" name="xbox360Extensions" value='""" + xbox360Extensions + """' />
+                        </div>
+                    </div>
+                </fieldset>
               </div>
             </div>
             <style>
@@ -586,6 +617,8 @@ class WebServe(object):
             </style>
              <script>
                 $(document).ready(function () {
+                    $("#abgx360Region").val('""" + abgx360Region + """');
+                    $("#abgx360Region").chosen({width:200});
                     var previousNestedPathNode = ''
                     var previousPathNode = ''
                     var pathNode = '';
@@ -702,6 +735,13 @@ class WebServe(object):
                     $('#usenetCrawlerEnabled').change(function() {
                         $('#usenetCrawlerSection').toggle();
                     });
+                    if($("#abgx360Enabled").is(':checked'))
+                    {
+                        $('#abgx360Section').toggle();
+                    }
+                    $('#abgx360Enabled').change(function() {
+                        $('#abgx360Section').toggle();
+                    });
                     $("#settingsTabs").tabs();
                     $("#saveButton").button();
                     $("#saveButton").click(function () {
@@ -717,6 +757,10 @@ class WebServe(object):
                         assembledUrl = assembledUrl + "&footerContent=" + encodeURIComponent($("#footerContent").val())
                         assembledUrl = assembledUrl + "&onlySearchNew=" + $("#onlySearchNew").is(':checked');
                         assembledUrl = assembledUrl + "&launchBrowser=" + $("#launchBrowser").is(':checked');
+                        assembledUrl = assembledUrl + "&abgx360Enabled=" + $("#abgx360Enabled").is(':checked');
+                        assembledUrl = assembledUrl + "&abgx360Path=" + $("#abgx360Path").val();
+                        assembledUrl = assembledUrl + "&abgx360Region=" + $("#abgx360Region").val();
+                        assembledUrl = assembledUrl + "&xbox360Extensions=" + $("#xbox360Extensions").val();
 
                         $.ajax({
                             type: "GET",

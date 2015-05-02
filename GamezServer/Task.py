@@ -12,8 +12,122 @@ import sys
 import subprocess
 import os.path
 import json
+import shutil
 
 class Task(object):   
+
+    def PostProcess(self,folder,gameId):
+
+        result = ""
+        limitExtensions = ""
+        dao = DAO()
+        game = dao.GetWantedGame(gameId)
+        genericProcessing = True
+        result = result + 'Processing folder: ' + folder + '\n'
+        platformName = game[1]
+        gameTitle = game[2]
+        result = result + 'Processing Game: ' + gameTitle + '\n'
+        destFolderRoot = dao.GetSiteMasterData("destinationFolder")
+        if 'win' in sys.platform:
+            destFolderRoot = destFolderRoot[1:]
+        if(destFolderRoot == None or destFolderRoot == ""):
+            return "Destination Folder Missing"
+        destFolderPlatform = os.path.join(destFolderRoot, platformName)
+        destFolderGame = os.path.join(destFolderPlatform, gameTitle)
+        if not os.path.exists(destFolderGame):
+            result = result + 'Creating Game Folder\n'
+            os.makedirs(destFolderGame)
+
+        if(platformName == "Microsoft Xbox 360"):
+            failedFile = False
+            abgxEnabled = dao.GetSiteMasterData("abgx360Enabled")
+            abgxPath = dao.GetSiteMasterData("abgx360Path")
+            abgxRegion = dao.GetSiteMasterData("abgx360Region")
+            xbox360Extensions = dao.GetSiteMasterData("xbox360Extensions")
+            limitExtensions = xbox360Extensions
+            if(abgxEnabled and abgxPath != None):
+                if(os.path.exists(folder)):
+                   for file in os.listdir(folder):
+                       fileToProcess = os.path.join(folder, file)
+                       if(os.path.isfile(fileToProcess)):
+                           validFile = False
+                           if(limitExtensions != ""):
+                               for extension in limitExtensions.split(','):
+                                   if(fileToProcess.endswith(extension)):
+                                      validFile = True
+                           else:
+                                validFile = True
+                           if(validFile):
+                               #Run abgx against file
+                                regionFree = False
+                                command = abgxPath + ' --noverify --noupdate --stayoffline --nowrite --noautofix --norebuild --nofixdrt --nofixdev --noverbose "' + fileToProcess + '"'
+                                p = subprocess.Popen(command, stdout=subprocess.PIPE, shell=True)
+                                lines = p.stdout.readlines()
+                                for line in lines:
+                                    if(line.startswith("Game Name:")):
+                                        gameName = line.replace("Game Name: ", "").lstrip().rstrip()
+                                    if(line.startswith("SS looks valid")):
+                                        validSs = True
+                                    if(line.startswith("DMI looks valid")):
+                                        validDmi = True
+                                    if(line.startswith("Region Code:")):
+                                        regionCode = line.replace("Region Code: ", "").lstrip().rstrip().replace("0x", "")
+                                    if(line.lstrip().startswith("Region Free")):
+                                        regionFree = True
+                                processFile = False
+                                if(regionFree == False):
+                                    if(abgxRegion == ""):
+                                        processFile = True
+                                    else:
+                                        if(abgxRegion == regionCode):
+                                            processFile = True
+                                else:
+                                    processFile = True
+                                if(processFile and gameName != "" and validSs and validDmi):
+                                    result = result + 'Copying file: ' + file + '\n'
+                                    extension = os.path.splitext(fileToProcess)[len(os.path.splitext(fileToProcess))-1]
+                                    finalFileName = os.path.join(destFolderGame,gameName + extension)
+                                    buffer_size = 1024
+                                    with open(fileToProcess, 'rb') as fsrc:
+                                        with open(finalFileName, 'wb') as fdest:
+                                              shutil.copyfileobj(fsrc, fdest, buffer_size) 
+                                else:
+                                    failedFile = True
+                                    result = result + 'Unable to verify. Skipping file: ' + file + '\n'
+                genericProcessing = False
+
+        if(genericProcessing):
+            result = result + "No specific processing defined. Just copying files\n"
+            if(os.path.exists(folder)):
+               for file in os.listdir(folder):
+                   fileToProcess = os.path.join(folder, file)
+                   if(os.path.isfile(fileToProcess)):
+                       validFile = False
+                       if(limitExtensions != ""):
+                           for extension in limitExtensions.split(','):
+                               if(fileToProcess.endswith(extension)):
+                                  validFile = True
+                       else:
+                            validFile = True
+                       if(validFile):
+                           result = result + 'Copying file: ' + file + '\n'
+                           shutil.copy2(fileToProcess, destFolderGame)
+        if(failedFile):
+            result = result + "Unable to completely process game: " + gameTitle
+        else:
+            dao.UpdateWantedGameStatus(gameId, "Downloaded")
+            result = result + "Processed " + gameTitle + " Succesfully"
+        return result
+
+    def Abgx360(self,folder):
+        dao = DAO()
+        abgxEnabled = dao.GetSiteMasterData("abgx360Enabled")
+        abgxPath = dao.GetSiteMasterData("abgx360Path")
+        abgxRegion = dao.GetSiteMasterData("abgx360Region")
+        if(enabled == "true"):
+            print ''
+        else:
+            return True
      
     def GetFolders(self,folder=None,upDirectory=None):
         result = ""
