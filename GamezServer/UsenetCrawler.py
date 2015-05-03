@@ -37,7 +37,7 @@ class UsenetCrawler(object):
 
     def SearchAndSendToSab(self,usenetCrawlerApiKey, sabnzbdApiKey, platform, title, wantedGameId,sabnzbdBaseUrl):
         cat = self.categories.get(platform, self.defaultCategory)
-        usenetCrawlerUrl = "https://www.usenet-crawler.com/api?apikey=" + usenetCrawlerApiKey + "&t=search&q="+ title + "&sort=posted_desc&cat=" + cat
+        usenetCrawlerUrl = "https://www.usenet-crawler.com/api?apikey=" + usenetCrawlerApiKey + "&t=search&q="+ urllib.quote_plus(title) + "&sort=posted_desc&cat=" + cat
         
         webRequest = urllib2.Request(usenetCrawlerUrl, None, {'User-Agent' : "GamezServer"})
         response = urllib2.urlopen(webRequest)

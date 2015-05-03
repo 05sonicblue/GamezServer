@@ -33,7 +33,7 @@ class Task(object):
         if(destFolderRoot == None or destFolderRoot == ""):
             return "Destination Folder Missing"
         destFolderPlatform = os.path.join(destFolderRoot, platformName)
-        destFolderGame = os.path.join(destFolderPlatform, gameTitle)
+        destFolderGame = os.path.join(destFolderPlatform, gameTitle.replace(":", ""))
         if not os.path.exists(destFolderGame):
             result = result + 'Creating Game Folder\n'
             os.makedirs(destFolderGame)
@@ -116,6 +116,8 @@ class Task(object):
             result = result + "Unable to completely process game: " + gameTitle
         else:
             dao.UpdateWantedGameStatus(gameId, "Downloaded")
+            if(os.path.exists(folder)):
+               shutil.rmtree(folder)
             result = result + "Processed " + gameTitle + " Succesfully"
         return result
 

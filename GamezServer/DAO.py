@@ -23,7 +23,7 @@ class DAO(object):
             cursor = db.cursor()
             cursor.execute('pragma user_version')
             version = cursor.fetchone()[0]
-            if(version==0):
+            if(version==0 or version==1):
                 self.LogMessage("Building Tables", "Info")
                 db.execute("CREATE TABLE IF NOT EXISTS MasterPlatforms (ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,PlatformID TEXT,PlatformName TEXT,PlatformUniqueName TEXT)")
                 db.execute("CREATE TABLE IF NOT EXISTS MasterGames (ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,PlatformID TEXT,GameID TEXT,GameTitle TEXT,ReleaseDate TEXT)")
@@ -32,11 +32,6 @@ class DAO(object):
                 db.execute("CREATE TABLE IF NOT EXISTS SiteMasterData (ID INTEGER PRIMARY KEY AUTOINCREMENT,Type TEXT,Content TEXT)")
                 db.execute("CREATE TABLE IF NOT EXISTS SearcherPriority (ID INTEGER PRIMARY KEY AUTOINCREMENT,Searcher TEXT,SortOrder INTEGER)")
                 db.execute("CREATE TABLE IF NOT EXISTS SearcherHistory (ID INTEGER PRIMARY KEY AUTOINCREMENT,Searcher TEXT,SearcherID TEXT)")
-                db.execute("INSERT INTO SiteMasterData (Type,Content) SELECT 'HeaderContents','' WHERE NOT EXISTS(SELECT 1 FROM SiteMasterData WHERE Type='HeaderContents')")
-                db.execute("INSERT INTO SiteMasterData (Type,Content) SELECT 'currentVersion','0.0.1' WHERE NOT EXISTS(SELECT 1 FROM SiteMasterData WHERE Type='currentVersion')")
-                db.execute("INSERT INTO SiteMasterData (Type,Content) SELECT 'launchBrowser','true' WHERE NOT EXISTS(SELECT 1 FROM SiteMasterData WHERE Type='launchBrowser')")
-                cursor.execute('pragma user_version=1')
-            if(version==1):
                 db.execute("INSERT INTO SiteMasterData (Type,Content) SELECT 'HeaderContents','' WHERE NOT EXISTS(SELECT 1 FROM SiteMasterData WHERE Type='HeaderContents')")
                 db.execute("INSERT INTO SiteMasterData (Type,Content) SELECT 'currentVersion','0.0.1' WHERE NOT EXISTS(SELECT 1 FROM SiteMasterData WHERE Type='currentVersion')")
                 db.execute("INSERT INTO SiteMasterData (Type,Content) SELECT 'launchBrowser','true' WHERE NOT EXISTS(SELECT 1 FROM SiteMasterData WHERE Type='launchBrowser')")
@@ -138,6 +133,12 @@ class DAO(object):
             cursor.execute("SELECT MasterPlatforms.PlatformName,MasterGames.GameTitle,MasterGames.ReleaseDate,WantedGames.STATUS,WantedGames.ID FROM WantedGames inner join MasterPlatforms on (MasterPlatforms.PlatformID=WantedGames.PlatformID) inner join MasterGames on (MasterGames.GameID=WantedGames.gameID and MasterGames.PlatformID=MasterPlatforms.platformID)")
             return cursor.fetchall()
 
+    def GetWantedGamesByStatus(self,status):
+        with sqlite3.connect(GamezServer.Service.DBPATH) as db:
+            cursor = db.cursor()
+            cursor.execute("SELECT MasterPlatforms.PlatformName,MasterGames.GameTitle,MasterGames.ReleaseDate,WantedGames.STATUS,WantedGames.ID FROM WantedGames inner join MasterPlatforms on (MasterPlatforms.PlatformID=WantedGames.PlatformID) inner join MasterGames on (MasterGames.GameID=WantedGames.gameID and MasterGames.PlatformID=MasterPlatforms.platformID) WHERE WantedGames.Status='" + status + "'")
+            return cursor.fetchall()
+
     def GetNeededGames(self):
         with sqlite3.connect(GamezServer.Service.DBPATH) as db:
             cursor = db.cursor()
@@ -145,7 +146,6 @@ class DAO(object):
             return cursor.fetchall()
 
     def GetWantedGame(self,gameId):
-        print gameId
         with sqlite3.connect(GamezServer.Service.DBPATH) as db:
             cursor = db.cursor()
             cursor.execute("SELECT WantedGames.ID,MasterPlatforms.PlatformName,MasterGames.GameTitle,MasterGames.ReleaseDate,WantedGames.STATUS FROM WantedGames inner join MasterPlatforms on (MasterPlatforms.PlatformID=WantedGames.PlatformID) inner join MasterGames on (MasterGames.GameID=WantedGames.gameID and MasterGames.PlatformID=MasterPlatforms.platformID) WHERE WantedGames.ID=?", [gameId])

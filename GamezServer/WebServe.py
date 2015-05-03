@@ -74,6 +74,122 @@ class WebServe(object):
         return ""
 
     @cherrypy.expose
+    def Manage(self):
+        content = ""
+        dao = DAO()
+        snatchedGames = dao.GetWantedGamesByStatus("Snatched")
+        downloadedGames = dao.GetWantedGamesByStatus("Downloaded")
+        wantedGames = dao.GetWantedGamesByStatus("Wanted")
+        currentVersion = dao.GetSiteMasterData("currentVersion")
+        currentHeaderContent = dao.GetSiteMasterData("HeaderContents")
+        currentFooterContent = dao.GetSiteMasterData("FooterContents")
+        content = content + currentHeaderContent.format(currentVersion)
+        content = content + """
+            <div id="manageTabs"  style="height:500">
+              <ul>
+                <li><a href="#status-tab">Snatched Games</a></li>
+              </ul>
+              <div id="status-tab">                
+                <table align="left" valign="top" style="height:325px">
+                    <thead>
+                        <th>Downloaded</th>
+                        <th>Snatched</th>
+                        <th>Wanted</th>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <ul id="downloadedList" style="overflow-y:scroll;border: 1px solid black;width: 300px;min-height: 300px;max-height:300px;list-style-type: none;margin: 0;padding: 5px 0 0 0;float: left;margin-right: 10px;" class="connectedSortable">
+                                """
+        for downloadedGame in downloadedGames:
+            content = content + '<li style="margin: 0 5px 5px 5px;padding: 5px;font-size: 1.2em;width: 300px;" class="ui-state-default" value="' + str(downloadedGame[4]) + '">' + str(downloadedGame[1]) + '</li>'
+        content = content + """
+                                  
+                                </ul>
+                            </td>
+                            <td>
+                                <ul id="snatchedList" style="overflow-y:scroll;border: 1px solid black;width: 300px;min-height: 300px;max-height:300px;list-style-type: none;margin: 0;padding: 5px 0 0 0;float: left;margin-right: 10px;" class="connectedSortable">
+                                """
+        for snatchedGame in snatchedGames:
+            content = content + '<li style="margin: 0 5px 5px 5px;padding: 5px;font-size: 1.2em;width: 300px;" class="ui-state-default" value="' + str(snatchedGame[4]) + '">' + str(snatchedGame[1]) + '</li>'
+        content = content + """
+                                </ul>
+                            </td>
+                            <td>
+                                <ul id="wantedList" style="overflow-y:scroll;border: 1px solid black;width: 300px;min-height: 300px;max-height:300px;list-style-type: none;margin: 0;padding: 5px 0 0 0;float: left;margin-right: 10px;" class="connectedSortable">
+                                """
+        for wantedGame in wantedGames:
+            content = content + '<li style="margin: 0 5px 5px 5px;padding: 5px;font-size: 1.2em;width: 300px;" class="ui-state-default" value="' + str(wantedGame[4]) + '">' + str(wantedGame[1]) + '</li>'
+        content = content + """
+                                </ul>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+              </div>
+            </div>
+            <script>
+                $(document).ready(function(){
+                    
+                    $("#downloadedList").sortable({
+    		            connectWith: ['.connectedSortable'],
+                        receive: function( event, ui ) {
+                            status = 'Downloaded';
+                            gameId = ui.item.val();
+                            $.ajax({
+                                type: "GET",
+                                url: '/UpdateStatus?status=' + status + '&gameId=' + gameId,
+                                success: function (data) {
+                                    if(data != "")
+                                    {
+                                        toastr.info(data);
+                                    }
+                                }
+                            });
+                        }
+    	            });
+                    $("#snatchedList").sortable({
+    		            connectWith: ['.connectedSortable'],
+                        receive: function( event, ui ) {
+                            status = 'Snatched';
+                            gameId = ui.item.val();
+                            $.ajax({
+                                type: "GET",
+                                url: '/UpdateStatus?status=' + status + '&gameId=' + gameId,
+                                success: function (data) {
+                                    if(data != "")
+                                    {
+                                        toastr.info(data);
+                                    }
+                                }
+                            });
+                        }
+    	            });
+                    $("#wantedList").sortable({
+    		            connectWith: ['.connectedSortable'],
+                        receive: function( event, ui ) {
+                            status = 'Wanted'
+                            gameId = ui.item.val();
+                            $.ajax({
+                                type: "GET",
+                                url: '/UpdateStatus?status=' + status + '&gameId=' + gameId,
+                                success: function (data) {
+                                    if(data != "")
+                                    {
+                                        toastr.info(data);
+                                    }
+                                }
+                            });
+                        }
+    	            });
+                    $("#manageTabs").tabs();
+                });
+            </script>
+        """
+        content = content + currentFooterContent
+        return content
+
+    @cherrypy.expose
     def index(self,statusMessage=None,addedGameId=None):
         dao = DAO()
         wantedGames = dao.GetWantedGames()
@@ -99,8 +215,8 @@ class WebServe(object):
                 optionList = optionList + '<option selected>Snatched</option>'
             else:
                 optionList = optionList + '<option>Snatched</option>'
-            if(game[3] == 'Ignored'):
-                optionList = optionList + '<option selected>Ignored</option>'
+            if(game[3] == 'Downloaded'):
+                optionList = optionList + '<option selected>Downloaded</option>'
             else:
                 optionList = optionList + '<option>Ignored</option>'
             rowContent = "<tr><td>" + game[0] + "</td><td>" + game[1] + "</td><td>" + game[2] + """</td><td><select onchange="statusUrl='/UpdateStatus?status=' + $(this).val() + '&gameId=""" + str(game[4]) + """';$.ajax({type: 'GET',url: statusUrl,success: function (data) {toastr.info(data);},error: function (xhr, ajaxOptions, thrownError) {toastr.info('Unable to update: ' + thrownError);}});">""" + optionList + "</select></td><td><a href='/DeleteGame?gameId=" + str(game[4]) + "'>Delete</a>&nbsp;|&nbsp;<a href='/ForceSearch?gameId=" + str(game[4]) + """' onclick="forceSearchUrl = '/ForceSearch?gameId=""" + str(game[4]) + """';$.ajax({type: 'GET',url: forceSearchUrl,success: function (data) {toastr.info(data);},error: function (xhr, ajaxOptions, thrownError) {toastr.info('Unable to force search: ' + thrownError);}});return false;">Force Search</a>&nbsp;|&nbsp;<a href='/ForceSearch?gameId=""" + str(game[4]) + """' onclick="forceSearchNewUrl = '/ForceSearchNew?gameId=""" + str(game[4]) + """';$.ajax({type: 'GET',url: forceSearchNewUrl,success: function (data) {toastr.info(data);},error: function (xhr, ajaxOptions, thrownError) {toastr.info('Unable to force search: ' + thrownError);}});return false;">Force Search New</a></td></tr>"""
@@ -642,7 +758,6 @@ class WebServe(object):
                         {
                             folderPathUrl = '/GetFolders?upDirectory=False&folderPath=' + selectedPath;
                         }
-                        alert(folderPathUrl);
                         $.ajax({
                             type: "GET",
                             url: folderPathUrl,
