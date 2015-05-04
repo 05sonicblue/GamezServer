@@ -66,6 +66,8 @@ class Task(object):
                                 for line in lines:
                                     if(line.startswith("Game Name:")):
                                         gameName = line.replace("Game Name: ", "").lstrip().rstrip()
+                                    if(line.startswith("Disc Number:")):
+                                        discNumber = line.replace("Disc Number: ", "").lstrip().rstrip()
                                     if(line.startswith("SS looks valid")):
                                         validSs = True
                                     if(line.startswith("DMI looks valid")):
@@ -74,6 +76,7 @@ class Task(object):
                                         regionCode = line.replace("Region Code: ", "").lstrip().rstrip().replace("0x", "")
                                     if(line.lstrip().startswith("Region Free")):
                                         regionFree = True
+
                                 processFile = False
                                 if(regionFree == False):
                                     if(abgxRegion == ""):
@@ -87,6 +90,9 @@ class Task(object):
                                     result = result + 'Copying file: ' + file + '\n'
                                     extension = os.path.splitext(fileToProcess)[len(os.path.splitext(fileToProcess))-1]
                                     finalFileName = os.path.join(destFolderGame,gameName + extension)
+                                    if(discNumber != None):
+                                        finalFileName = finalFileName + ' - ' + str(discNumber)
+                                    finalFileName = finalFileName + extension
                                     buffer_size = 1024
                                     with open(fileToProcess, 'rb') as fsrc:
                                         with open(finalFileName, 'wb') as fdest:

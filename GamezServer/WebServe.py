@@ -47,6 +47,49 @@ class WebServe(object):
         shutil.rmtree(updatePath)
         dao = DAO()
         dao.UpdateMasterSiteData("currentVersion",newVersion)
+        dao.UpdateMasterSiteData("HeaderContents", """ 
+                    <script src="/static/scripts/jquery.js"></script>
+            <script src="/static/scripts/jquery-ui.js"></script>
+            <script src="/static/scripts/Menu.js"></script>
+            <script src="/static/scripts/jquery.dataTables.js"></script>
+            <script src="/static/scripts/dataTables.jqueryui.js"></script>
+            <script src="/static/scripts/dataTables.tableTools.js"></script>
+            <script src="/static/scripts/chosen.jquery.js"></script>
+            <script src="/static/scripts/toastr.js"></script>
+
+            <link href="/static/styles/jquery-ui.css" rel="stylesheet" />
+            <link href="/static/styles/Menu.css" rel="stylesheet" />
+            <link href="/static/styles/dataTables.jqueryui.css" rel="stylesheet" />
+            <link href="/static/styles/dataTables.tableTools.css" rel="stylesheet" />
+            <link href="/static/styles/chosen.css" rel="stylesheet" />
+            <link href="/static/styles/toastr.css" rel="stylesheet" />
+            <div id='cssmenu'>
+                <ul>
+                    <li class='active align-center'>
+                        <a href='/'><span>Home</span></a>
+                        <ul>
+                            <li><a href='/AddGame'><span>Add Game</span></a></li>
+                            <li><a href='/AddByPlatform'><span>Add by Platform</span></a></li>
+                        </ul>
+                    </li>
+                    <li class='active align-center'>
+                        <a href='/Manage'><span>Manage</span></a>
+                    </li>
+                    <li class='active has-sub'><a href='/Settings'><span>Settings</span></a>
+                        <ul>
+                            <li><a href='/Settings#gamezserver-tab'><span>Gamez Server</span></a></li>
+                            <li><a href='/Settings#downloaders-tab'><span>Downloaders</span></a></li>
+                            <li><a href='/Settings#searchers-tab'><span>Searchers</span></a></li>
+                            <li><a href='/Settings#postprocess-tab'><span>Post Process</span></a></li>
+                        </ul>
+                    </li>
+                    <li class='active align-center'>
+                        <a href='/Log'><span>Log</span></a>
+                    </li>
+                    <div style="float:right;padding: 15px 20px;color: #7a8189;">v.0.0.1</div>
+                </ul>
+            </div>
+        """)
         result = "Gamez Server updated to V." + newVersion
         raise cherrypy.HTTPRedirect("/?statusMessage=" + result)
 
