@@ -24,12 +24,12 @@ Current Functionality:
 * Auto-Searches Game When Added
 * Configuration to always try new version
 * Configuration to auto-open browser on start
+* Status Management
 
 Future Plans
 * Additional Search Providers
 * Add Blackhole Torrent Downloader
 * Add Notifications
-* Bulk status update
 * Add Configuration to limit extensions for files copied during post process
 * Add Configuration to delete source folder after post processing is complete
 * Add Cover Art
