@@ -60,6 +60,7 @@ class Task(object):
                            if(validFile):
                                #Run abgx against file
                                 regionFree = False
+                                discNumber = None
                                 command = abgxPath + ' --noverify --noupdate --stayoffline --nowrite --noautofix --norebuild --nofixdrt --nofixdev --noverbose "' + fileToProcess + '"'
                                 p = subprocess.Popen(command, stdout=subprocess.PIPE, shell=True)
                                 lines = p.stdout.readlines()
