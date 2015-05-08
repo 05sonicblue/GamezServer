@@ -40,6 +40,7 @@ class Task(object):
 
         if(platformName == "Microsoft Xbox 360"):
             failedFile = False
+            fileCount = 0
             abgxEnabled = dao.GetSiteMasterData("abgx360Enabled")
             abgxPath = dao.GetSiteMasterData("abgx360Path")
             abgxRegion = dao.GetSiteMasterData("abgx360Region")
@@ -90,7 +91,7 @@ class Task(object):
                                 if(processFile and gameName != "" and validSs and validDmi):
                                     result = result + 'Copying file: ' + file + '\n'
                                     extension = os.path.splitext(fileToProcess)[len(os.path.splitext(fileToProcess))-1]
-                                    finalFileName = os.path.join(destFolderGame,gameName + extension)
+                                    finalFileName = os.path.join(destFolderGame,gameName)
                                     if(discNumber != None):
                                         finalFileName = finalFileName + ' - ' + str(discNumber)
                                     finalFileName = finalFileName + extension
@@ -98,11 +99,13 @@ class Task(object):
                                     with open(fileToProcess, 'rb') as fsrc:
                                         with open(finalFileName, 'wb') as fdest:
                                               shutil.copyfileobj(fsrc, fdest, buffer_size) 
+                                    fileCount = fileCount + 1
                                 else:
                                     failedFile = True
                                     result = result + 'Unable to verify. Skipping file: ' + file + '\n'
                 genericProcessing = False
-
+            if(fileCount == 0):
+                failedFile = True
         if(genericProcessing):
             result = result + "No specific processing defined. Just copying files\n"
             if(os.path.exists(folder)):
